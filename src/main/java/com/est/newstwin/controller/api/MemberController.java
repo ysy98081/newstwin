@@ -1,4 +1,4 @@
-package com.est.newstwin.controller;
+package com.est.newstwin.controller.api;
 
 import com.est.newstwin.dto.api.ApiResponse;
 import com.est.newstwin.dto.member.MemberRequestDto;
