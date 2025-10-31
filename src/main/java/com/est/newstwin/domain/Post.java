@@ -21,11 +21,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
 @Table(name = "post")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
@@ -54,6 +56,9 @@ public class Post {
   @Lob
   @Column(nullable = false)
   private String content;
+
+  @Column(name = "state", nullable = false)
+  private boolean state;
 
   @Column(name = "thumbnail_url", length = 255)
   private String thumbnailUrl;
