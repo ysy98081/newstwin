@@ -1,8 +1,8 @@
 -- MEMBER
 INSERT INTO member (member_name, email, password, role, created_at, updated_at)
-VALUES ('master', 'master@test.com', 'pass', 'ADMIN', NOW(), NOW());
+VALUES ('master', 'master@test.com', 'pass', 'ROLE_ADMIN', NOW(), NOW());
 INSERT INTO member (member_name, email, password, role, created_at, updated_at)
-VALUES ('tester', 'tester@test.com', 'pass', 'USER', NOW(), NOW());
+VALUES ('tester', 'tester@test.com', 'pass', 'ROLE_USER', NOW(), NOW());
 
 -- CATEGORY
 INSERT INTO category (category_name) VALUES ('경제');

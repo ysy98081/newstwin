@@ -21,7 +21,7 @@ public class Member {
 
   private String memberName;  // 닉네임
   private String password;    // 비밀번호
-  private String email;       // 이메일(로그인 id)
+  private String email;       // 이메일(로그인 ID)
 
   @Enumerated(EnumType.STRING)
   private Role role;          // 역할
@@ -45,6 +45,7 @@ public class Member {
   }
 
   public enum Role {
-    USER, ADMIN
+    ROLE_USER,
+    ROLE_ADMIN
   }
 }

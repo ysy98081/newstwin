@@ -20,27 +20,29 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * 회원가입 로직
+     * 회원가입
+     * - 이메일 중복 검사 및 비밀번호 암호화 후 저장
      */
     public MemberResponseDto signup(MemberRequestDto requestDto) {
-        // 1. 이메일 중복 검사
+        // 이메일 중복 검사
         if (memberRepository.findByEmail(requestDto.getEmail()).isPresent()) {
             throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
         }
 
-        // 2. 비밀번호 암호화
+        // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
 
-        // 3. Member 엔티티 생성
+        // Member 엔티티 생성
         Member member = new Member(
                 requestDto.getMemberName(),
                 encodedPassword,
                 requestDto.getEmail(),
-                Member.Role.USER
+                Member.Role.ROLE_USER
         );
 
-        // 4. 저장 및 응답 DTO 변환
+        // 저장 및 응답 DTO 변환
         Member savedMember = memberRepository.save(member);
+
         return MemberResponseDto.fromEntity(savedMember);
     }
 }

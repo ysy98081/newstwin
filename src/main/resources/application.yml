@@ -8,3 +8,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
+jwt:
+  secret: "m5fEIZP2NsnC5CFpKZxZ4dGhWQxqYGiWqkkuBRK7ChT4tf+b0mE+WbFqXvwJmT2Uo7nU6X2+E7Av0F3Q+YkM7A=="
+  expiration-time: 3600000 # 1시간 (단위: ms)

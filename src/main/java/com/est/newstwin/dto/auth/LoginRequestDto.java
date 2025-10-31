@@ -7,6 +7,11 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
+/**
+ * 로그인 요청 DTO
+ * - 사용자 이메일과 비밀번호 입력을 전달
+ */
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

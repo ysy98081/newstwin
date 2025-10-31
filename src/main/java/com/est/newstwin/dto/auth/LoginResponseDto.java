@@ -4,6 +4,12 @@ import lombok.Getter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
+/**
+ * 로그인 응답 DTO
+ * - JWT Access Token 및 사용자 정보를 반환
+ */
+
+
 @Getter
 @AllArgsConstructor
 @Builder

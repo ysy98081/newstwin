@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
+/**
+ * 회원가입 요청 DTO
+ * - 사용자 이름, 이메일, 비밀번호 입력값 검증
+ */
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
