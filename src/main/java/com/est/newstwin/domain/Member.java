@@ -1,18 +1,8 @@
 package com.est.newstwin.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,44 +12,36 @@ import lombok.ToString;
 @Table(name = "member")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
 @ToString
 public class Member {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "member_id")
   private Long id;
 
-  @Column(name = "member_name", nullable = false, length = 50)
-  private String memberName;
-
-  @Column(nullable = false, length = 255)
-  private String password;
-
-  @Column(nullable = false, length = 100, unique = true)
-  private String email;
+  private String memberName;  // 닉네임
+  private String password;    // 비밀번호
+  private String email;       // 이메일(로그인 id)
 
   @Enumerated(EnumType.STRING)
-  @Column(nullable = false)
-  private Role role;
+  private Role role;          // 역할
 
-  @Column(name = "created_at", columnDefinition = "TIMESTAMP(0)")
-  private LocalDateTime createdAt;
+  private LocalDateTime createdAt;  // 생성일자
+  private LocalDateTime updatedAt;  // 수정일자
 
-  @Column(name = "updated_at", columnDefinition = "TIMESTAMP(0)")
-  private LocalDateTime updatedAt;
-
-  @PrePersist
-  protected void onCreate() {
-    this.createdAt = LocalDateTime.now().withNano(0);
-    this.updatedAt = LocalDateTime.now().withNano(0);
+  public Member(String memberName, String password, String email, Role role) {
+    this.memberName = memberName;
+    this.password = password;
+    this.email = email;
+    this.role = role;
+    this.createdAt = LocalDateTime.now();
+    this.updatedAt = LocalDateTime.now();
   }
 
-  @PreUpdate
-  protected void onUpdate() {
-    this.updatedAt = LocalDateTime.now().withNano(0);
+  public void update(String memberName, String password) {
+    this.memberName = memberName;
+    this.password = password;
+    this.updatedAt = LocalDateTime.now();
   }
 
   public enum Role {
