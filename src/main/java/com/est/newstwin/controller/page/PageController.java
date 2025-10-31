@@ -81,6 +81,9 @@ public class PageController {
         return "admin/posts";
     }
 
+    @GetMapping("/admin/posts-contents")
+    public String adminPostsContents() { return "admin/posts-contents"; }
+
     @GetMapping("/admin/mails")
     public String adminMails() {
         return "admin/mails";
