@@ -55,9 +55,13 @@ public class Post {
   @Column(nullable = false)
   private String content;
 
+  private int count;
+
   @Column(name = "thumbnail_url", length = 255)
   private String thumbnailUrl;
 
+  @Column(name = "status", nullable = false)
+  private Boolean isActive = true;
 
   @Column(name = "created_at", columnDefinition = "TIMESTAMP(0)")
   private LocalDateTime createdAt;

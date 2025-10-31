@@ -41,7 +41,7 @@ public class UserSubscription {
   @JoinColumn(name = "category_id", nullable = false)
   private Category category;
 
-  @Column(name = "is_active", nullable = false)
+  @Column(name = "status", nullable = false)
   private Boolean isActive = true;
 
   @Column(name = "created_at", columnDefinition = "TIMESTAMP(0)")
