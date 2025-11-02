@@ -1,8 +1,8 @@
 -- MEMBER
 INSERT INTO member (member_name, email, password, role, created_at, updated_at)
-VALUES ('master', 'master@test.com', 'pass', 'ROLE_ADMIN', NOW(), NOW());
+VALUES ('master', 'master@test.com', '$2b$12$Xq6gldZgCgsec6HLq7bB/e.xOTyFZq4q4eXqwXdBOXS/E2TqVaXy6', 'ROLE_ADMIN', NOW(), NOW());
 INSERT INTO member (member_name, email, password, role, created_at, updated_at)
-VALUES ('tester', 'tester@test.com', 'pass', 'ROLE_USER', NOW(), NOW());
+VALUES ('tester', 'tester@test.com', '$2b$12$Xq6gldZgCgsec6HLq7bB/e.xOTyFZq4q4eXqwXdBOXS/E2TqVaXy6', 'ROLE_USER', NOW(), NOW());
 
 
 

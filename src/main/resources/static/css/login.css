@@ -1,0 +1,69 @@
+/* -----------------------------
+   로그인 페이지 전용 스타일
+   (auth/login.html)
+----------------------------- */
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f8f9fa;
+    color: #222;
+}
+
+/* 전체 컨테이너: 화면 중앙 정렬 */
+.login-container {
+    min-height: calc(100vh - 160px); /* 헤더, 푸터 고려 */
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+/* 로고 이미지 */
+.login-logo {
+    width: 180px;
+    height: auto;
+}
+
+/* 로그인 박스 */
+.login-box {
+    width: 360px;
+    border: 1px solid #e2e2e2;
+}
+
+.login-box .form-control {
+    border-radius: 6px;
+    height: 42px;
+    font-size: 14px;
+    padding: 8px 12px;
+}
+
+/* 버튼 스타일 */
+.login-box .btn-dark {
+    background-color: #222;
+    border: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.login-box .btn-dark:hover {
+    background-color: #000;
+}
+
+.login-box .btn-outline-dark {
+    border: 1px solid #222;
+    transition: all 0.2s ease-in-out;
+}
+
+.login-box .btn-outline-dark:hover {
+    background-color: #222;
+    color: #fff;
+}
+
+/* 반응형 */
+@media (max-width: 576px) {
+    .login-box {
+        width: 100%;
+        padding: 2rem 1.5rem;
+    }
+
+    .login-logo {
+        width: 150px;
+    }
+}

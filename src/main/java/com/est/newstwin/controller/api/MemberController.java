@@ -65,4 +65,20 @@ public class MemberController {
 
         return ResponseEntity.ok(ApiResponse.success("로그인된 사용자 정보입니다.", response));
     }
+
+
+    /**
+     * 이메일 중복 확인
+     */
+    @GetMapping("/check-email")
+    public ResponseEntity<ApiResponse<Void>> checkEmail(@RequestParam String email) {
+        boolean exists = memberRepository.findByEmail(email).isPresent();
+
+        if (exists) {
+            return ResponseEntity.ok(ApiResponse.fail("이미 사용 중인 이메일입니다."));
+        }
+
+        return ResponseEntity.ok(ApiResponse.success("사용 가능한 이메일입니다.", null));
+    }
+
 }

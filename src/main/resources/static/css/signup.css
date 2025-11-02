@@ -1,0 +1,67 @@
+/* -----------------------------
+   회원가입 페이지 스타일
+----------------------------- */
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f8f9fa;
+    color: #222;
+}
+
+.signup-container {
+    min-height: calc(100vh - 160px);
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+.signup-logo {
+    width: 180px;
+    height: auto;
+}
+
+.signup-box {
+    width: 400px;
+    border: 1px solid #e2e2e2;
+}
+
+.signup-box .form-control {
+    border-radius: 6px;
+    height: 42px;
+    font-size: 14px;
+    padding: 8px 12px;
+}
+
+.signup-box .btn-dark {
+    background-color: #222;
+    border: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.signup-box .btn-dark:hover {
+    background-color: #000;
+}
+
+/* 유효성 텍스트 */
+#passwordFeedback,
+#confirmFeedback,
+#emailFeedback {
+    font-size: 13px;
+}
+
+.valid {
+    color: #28a745;
+}
+
+.invalid {
+    color: #dc3545;
+}
+
+@media (max-width: 576px) {
+    .signup-box {
+        width: 100%;
+        padding: 2rem 1.5rem;
+    }
+
+    .signup-logo {
+        width: 150px;
+    }
+}
