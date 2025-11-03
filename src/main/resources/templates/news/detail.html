@@ -58,15 +58,24 @@
 
     <!-- 반응 버튼 -->
     <div class="reaction-bar">
+
       <button id="likeBtn"
-              class="btn btn-light border-0"
+              class="btn btn-light border-0 d-flex align-items-center gap-1"
               th:data-post-id="${post.id}"
               th:data-liked="${liked}">
-        <span id="heartIcon" th:text="${liked} ? '❤️' : '🤍'">🤍</span>
+        <span id="heartIcon" th:text="${liked} ? '❤️' : '🤍'"></span>
         <span id="likeCount" th:text="${likeCount}">0</span>
-      </button><i class="bi bi-heart"></i><span>좋아요</span></button>
-      <button type="button"><i class="bi bi-bookmark"></i><span>북마크</span></button>
-      <button type="button"><i class="bi bi-share"></i><span>공유</span></button>
+        <span>좋아요</span>
+      </button>
+
+      <button id="bookmarkBtn"
+              class="btn btn-light border-0 d-flex align-items-center gap-1"
+              th:data-post-id="${post.id}"
+              th:data-bookmarked="${bookmarked}">
+        <i id="bookmarkIcon"
+           th:class="${bookmarked} ? 'bi bi-bookmark-fill' : 'bi bi-bookmark'"></i>
+        <span>북마크</span>
+      </button>
     </div>
 
     <!-- 댓글 -->
@@ -86,6 +95,28 @@
   const likeBtn = document.getElementById('likeBtn');
   const heartIcon = document.getElementById('heartIcon');
   const likeCountEl = document.getElementById('likeCount');
+  const postId = likeBtn.dataset.postId;
+
+  const bookmarkBtn = document.getElementById('bookmarkBtn');
+  const bookmarkIcon = document.getElementById('bookmarkIcon');
+
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    const resLike = await fetch(`/api/posts/${postId}/like`);
+    if (resLike.ok) {
+      const { liked, likeCount } = await resLike.json();
+      heartIcon.textContent = liked ? '❤️' : '🤍';
+      likeCountEl.textContent = likeCount;
+      likeBtn.dataset.liked = liked;
+    }
+
+    const resBookmark = await fetch(`/api/posts/${postId}/bookmark`);
+    if (resBookmark.ok) {
+      const { bookmarked } = await resBookmark.json();
+      bookmarkIcon.className = bookmarked ? 'bi bi-bookmark-fill' : 'bi bi-bookmark';
+      bookmarkBtn.dataset.bookmarked = bookmarked;
+    }
+  });
 
   likeBtn.addEventListener('click', async () => {
     const postId = likeBtn.dataset.postId;
@@ -93,7 +124,7 @@
     try {
       const res = await fetch(`/api/posts/${postId}/like`, { method: 'POST' });
       if (!res.ok) throw new Error('좋아요 실패');
-      const { liked, likeCount } = await res.json(); // DTO 기반 응답
+      const { liked, likeCount } = await res.json();
       heartIcon.textContent = liked ? '❤️' : '🤍';
       likeCountEl.textContent = likeCount;
       likeBtn.dataset.liked = liked;
@@ -101,6 +132,21 @@
       alert(e.message);
     } finally {
       likeBtn.disabled = false;
+    }
+  });
+
+  bookmarkBtn.addEventListener('click', async () => {
+    bookmarkBtn.disabled = true;
+    try {
+      const res = await fetch(`/api/posts/${postId}/bookmark`, { method: 'POST' });
+      if (!res.ok) throw new Error('북마크 실패');
+      const { bookmarked } = await res.json();
+      bookmarkIcon.className = bookmarked ? 'bi bi-bookmark-fill' : 'bi bi-bookmark';
+      bookmarkBtn.dataset.bookmarked = bookmarked;
+    } catch (e) {
+      alert(e.message);
+    } finally {
+      bookmarkBtn.disabled = false;
     }
   });
 </script>

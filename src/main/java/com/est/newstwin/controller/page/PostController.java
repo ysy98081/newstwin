@@ -1,11 +1,11 @@
 package com.est.newstwin.controller.page;
 
-import com.est.newstwin.domain.Post;
-import com.est.newstwin.dto.api.PostDetailDto;
-import com.est.newstwin.dto.api.PostSummaryDto;
+import com.est.newstwin.dto.post.PostDetailDto;
+import com.est.newstwin.dto.post.PostSummaryDto;
 import com.est.newstwin.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -21,18 +21,43 @@ public class PostController {
 
   private final PostService postService;
 
-  @GetMapping("/feed")
+  @GetMapping("/news")
   public String getFeed(
-      @RequestParam(defaultValue = "all") String category,
-      @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+      @RequestParam(required = false) String category,
+      @RequestParam(defaultValue = "createdAt,desc") String sort,
+      @RequestParam(defaultValue = "0") int page,
       Model model
   ) {
+    if (category == null || category.isBlank()) {
+      category = "all";
+    }
+
+    Sort sortObj;
+    if (sort.startsWith("createdAt")) {
+      // 최신순 + 조회수 tie-break
+      sortObj = Sort.by(
+          sort.contains("desc") ? Sort.Order.desc("createdAt") : Sort.Order.asc("createdAt"),
+          Sort.Order.desc("count")   // tie breaker
+      );
+    } else if (sort.startsWith("count")) {
+      // 인기순 + 날짜 tie-break
+      sortObj = Sort.by(
+          sort.contains("desc") ? Sort.Order.desc("count") : Sort.Order.asc("count"),
+          Sort.Order.desc("createdAt") // tie breaker
+      );
+    } else {
+      // 기본 fallback
+      sortObj = Sort.by(Sort.Order.desc("createdAt"), Sort.Order.desc("count"));
+    }
+
+    PageRequest pageable = PageRequest.of(Math.max(page, 0), 10, sortObj);
+
     Page<PostSummaryDto> posts = postService.getPosts(category, pageable);
 
     model.addAttribute("posts", posts.getContent());
     model.addAttribute("page", posts);
     model.addAttribute("categoryName", category);
-    model.addAttribute("sort", pageable.getSort().toString());
+    model.addAttribute("sort", sort);
 
     return "news/list";
   }

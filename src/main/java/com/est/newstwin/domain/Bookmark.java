@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,12 +19,15 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-@Table(name = "bookmark")
+@Table(name = "bookmark",
+    uniqueConstraints = { @UniqueConstraint(columnNames = {"member_id","post_id"}) }
+    )
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = {"member", "post"})
+@ToString(exclude = {"member","post"})
 public class Bookmark {
 
   @Id

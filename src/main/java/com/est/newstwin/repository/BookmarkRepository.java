@@ -16,4 +16,8 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
   // 특정 회원이 북마크한 모든 게시글 조회
   List<Bookmark> findAllByMember(Member member);
+  //게시물에 해당하는 북마크 확인
+  boolean existsByPostIdAndMemberId(Long postId, Long memberId);
+  //게시물에 해당하는 북마크 삭제
+  void deleteByPostIdAndMemberId(Long postId, Long memberId);
 }

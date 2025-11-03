@@ -27,7 +27,7 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-@ToString(exclude = "member")
+@ToString(exclude = {"member","post"})
 public class Like {
 
   @Id
