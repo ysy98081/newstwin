@@ -48,7 +48,9 @@ public class SecurityConfig {
                                 "/",                    // 홈
                                 "/login",               // 로그인 페이지
                                 "/signup",              // 회원가입 페이지
-                                "/news/**",             // 뉴스 관련 페이지
+                                "/news/**",             // 임시조치
+                                "/news",                // 임시조치
+                                "/post/**",             // 임시조치
                                 "/feed",                // 뉴스 카테고리
                                 "/h2-console/**"        // H2 콘솔
                         ).permitAll()

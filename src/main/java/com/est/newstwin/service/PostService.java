@@ -1,25 +1,21 @@
 package com.est.newstwin.service;
 
 import com.est.newstwin.domain.Post;
-import com.est.newstwin.dto.api.PostDetailDto;
-import com.est.newstwin.dto.api.PostSummaryDto;
+import com.est.newstwin.dto.post.PostDetailDto;
+import com.est.newstwin.dto.post.PostSummaryDto;
 import com.est.newstwin.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
 
   private final PostRepository postRepository;
-
-  public Post getPostById(Long id) {
-    return postRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
-  }
 
   public Page<PostSummaryDto> getPosts(String category, Pageable pageable) {
     Page<Post> posts;
@@ -36,12 +32,14 @@ public class PostService {
     }
 
     // Entity → DTO 변환
-    return posts.map(p ->
+    return posts.map(post ->
         new PostSummaryDto(
-            p.getId(),
-            p.getTitle(),
-            p.getThumbnailUrl(),
-            abbreviate(p.getContent(), 120) // 요약 생성
+            post.getId(),
+            post.getTitle(),
+            post.getThumbnailUrl(),
+            post.getCreatedAt(),
+            post.getCount(),
+            abbreviate(post.getContent(), 120) // 요약 생성
         )
     );
   }
@@ -51,9 +49,12 @@ public class PostService {
     return text.length() > length ? text.substring(0, length) + "..." : text;
   }
 
+  @Transactional
   public PostDetailDto getPostDetail(Long id) {
     Post post = postRepository.findById(id)
         .orElseThrow(() -> new EntityNotFoundException("Post not found: " + id));
+
+    post.increaseCount();
 
     return new PostDetailDto(
         post.getId(),

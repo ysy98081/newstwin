@@ -87,4 +87,8 @@ public class Post {
 
   @OneToMany(mappedBy = "post")
   private List<Bookmark> bookmarks = new ArrayList<>();
+
+  public void increaseCount() {
+    this.count++;
+  }
 }

@@ -1,4 +1,4 @@
-package com.est.newstwin.dto.api;
+package com.est.newstwin.dto.post;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;

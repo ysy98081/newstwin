@@ -23,7 +23,10 @@ public class PageController {
         return "auth/signup";
     }
 
-    /* ---------- 뉴스 (News) ---------- */
+/*
+    */
+/* ---------- 뉴스 (News) ---------- *//*
+
     @GetMapping("/news")
     public String newsList() {
         return "news/list";
@@ -33,6 +36,7 @@ public class PageController {
     public String newsDetail() {
         return "news/detail";
     }
+*/
 
     /* ---------- 마이페이지 (Mypage) ---------- */
     @GetMapping("/mypage")
