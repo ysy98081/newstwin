@@ -1,14 +1,45 @@
 <header th:fragment="header">
-    <nav class="navbar navbar-expand-lg bg-light shadow-sm px-4 py-3">
-        <a class="navbar-brand fw-bold text-primary" th:href="@{/}">NewsTwin</a>
+    <nav class="navbar navbar-expand-lg bg-light shadow-sm px-4 py-2">
+        <!-- 로고 -->
+        <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+            <img th:src="@{/images/logo-title-none.png}" alt="NewsTwin Logo" class="logo me-2">
+        </a>
+
+        <!-- 모바일 토글 -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
+
+        <!-- 메뉴 -->
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav gap-2">
-                <li class="nav-item"><a class="nav-link" th:href="@{/news}">뉴스</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/mypage}">마이페이지</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/login}">로그인</a></li>
+            <ul class="navbar-nav align-items-center gap-3">
+
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold" th:href="@{/news}">뉴스</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold" th:href="@{/board}">게시판</a>
+                </li>
+
+                <!-- 프로필 이미지 (로그인 시) -->
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img th:src="@{/images/basic-profile.png}" alt="Profile"
+                             class="rounded-circle profile-img">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item" th:href="@{/mypage}">마이페이지</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" th:href="@{/logout}">로그아웃</a></li>
+                    </ul>
+                </li>
+
+                <!-- 비로그인 시 로그인 버튼 -->
+                <li class="nav-item" sec:authorize="isAnonymous()">
+                    <a class="nav-link fw-semibold px-3 py-1" th:href="@{/login}">로그인</a>
+                </li>
             </ul>
         </div>
     </nav>

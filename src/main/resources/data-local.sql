@@ -96,3 +96,4 @@ INSERT INTO mail_log (member_id, post_id, status, retry_count, last_attempt_at, 
 VALUES (1, 1, 'PENDING', 0, NULL, NULL, NOW());
 INSERT INTO mail_log (member_id, post_id, status, retry_count, last_attempt_at, error_message, created_at)
 VALUES (2, 2, 'PENDING', 0, NULL, NULL, NOW());
+
