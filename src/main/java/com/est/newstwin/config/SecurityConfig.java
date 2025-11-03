@@ -43,11 +43,12 @@ public class SecurityConfig {
                                 "/webjars/**"
                         ).permitAll()
 
+                        // 비로그인 사용자만 접근 가능 (로그인 상태면 접근 불가)
+                        .requestMatchers("/login", "/signup").anonymous()
+
                         // 인증 없이 접근 가능한 페이지
                         .requestMatchers(
                                 "/",                    // 홈
-                                "/login",               // 로그인 페이지
-                                "/signup",              // 회원가입 페이지
                                 "/news/**",             // 뉴스 관련 페이지
                                 "/feed",                // 뉴스 카테고리
                                 "/h2-console/**"        // H2 콘솔
@@ -74,7 +75,15 @@ public class SecurityConfig {
                 )
 
                 // JWT 필터를 UsernamePasswordAuthenticationFilter 앞에 삽입
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+
+
+                // 접근 거부 시 처리 (로그인된 사용자가 /login 접근 시 홈으로 리다이렉트)
+                .exceptionHandling(ex -> ex
+                    .accessDeniedHandler((request, response, accessDeniedException) -> {
+                        response.sendRedirect("/"); // 홈으로 이동
+                    })
+                );
 
         return http.build();
     }

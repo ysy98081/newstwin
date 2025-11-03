@@ -68,8 +68,3 @@ VALUES (1, 1, 'PENDING', 0, NULL, NULL, NOW());
 INSERT INTO mail_log (member_id, post_id, status, retry_count, last_attempt_at, error_message, created_at)
 VALUES (2, 2, 'PENDING', 0, NULL, NULL, NOW());
 
--- POST_CONTENT
-INSERT INTO post (member_id, category_id, type, title, content, state, thumbnail_url, created_at, updated_at)
-VALUES (1, 1, 'content', '게시글1', '게시글 내용입니다.','true', '', NOW(), NOW());
-INSERT INTO post (member_id, category_id, type, title, content, state, thumbnail_url, created_at, updated_at)
-VALUES (1, 2, 'content', '게시글2', '게시글 내용입니다.', 'true','', NOW(), NOW());
