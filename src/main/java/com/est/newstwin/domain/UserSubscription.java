@@ -17,11 +17,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
 @Table(name = "user_subscription")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
@@ -59,5 +61,13 @@ public class UserSubscription {
   @PreUpdate
   protected void onUpdate() {
     this.updatedAt = LocalDateTime.now().withNano(0);
+  }
+
+  public static UserSubscription create(Member member, Category category, boolean isActive) {
+    UserSubscription us = new UserSubscription();
+    us.member = member;
+    us.category = category;
+    us.isActive = isActive;
+    return us;
   }
 }
