@@ -34,31 +34,6 @@ public class PageController {
         return "news/detail";
     }
 
-    /* ---------- 마이페이지 (Mypage) ---------- */
-    @GetMapping("/mypage")
-    public String mypageMain() {
-        return "mypage/main";
-    }
-
-    @GetMapping("/mypage/edit")
-    public String mypageEdit() {
-        return "mypage/edit";
-    }
-
-    @GetMapping("/mypage/subscription")
-    public String mypageSubscription() {
-        return "mypage/subscription";
-    }
-
-    @GetMapping("/mypage/bookmarks")
-    public String mypageBookmarks() {
-        return "mypage/bookmarks";
-    }
-
-    @GetMapping("/mypage/withdraw")
-    public String mypageWithdraw() {
-        return "mypage/withdraw";
-    }
 
     /* ---------- 관리자 (Admin) ---------- */
     @GetMapping("/admin/login")

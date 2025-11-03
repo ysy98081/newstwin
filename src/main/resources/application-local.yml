@@ -20,3 +20,12 @@ spring:
     init:
       mode: always
       data-locations: classpath:data-local.sql
+
+
+# AWS 설정 (로컬에서는 더미 값으로)
+aws:
+  access-key-id: dummy
+  secret-access-key: dummy
+  region: ap-northeast-2
+  s3:
+    bucket-name: dummy-bucket

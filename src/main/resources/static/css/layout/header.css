@@ -29,7 +29,7 @@
     min-width: 70px; /* 버튼 영역 통일 */
 }
 
-.profile-img {
+.profile-img-header {
     width: 32px;
     height: 32px;
     object-fit: cover;

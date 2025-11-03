@@ -16,6 +16,8 @@ public class MemberResponseDto {
     private String memberName;
     private String email;
     private String role;
+    private String profileImage;
+    private Boolean receiveEmail;
 
     public static MemberResponseDto fromEntity(Member member) {
         return MemberResponseDto.builder()
@@ -23,6 +25,8 @@ public class MemberResponseDto {
                 .memberName(member.getMemberName())
                 .email(member.getEmail())
                 .role(member.getRole().name())
+                .profileImage(member.getProfileImage())
+                .receiveEmail(member.getReceiveEmail())
                 .build();
     }
 }

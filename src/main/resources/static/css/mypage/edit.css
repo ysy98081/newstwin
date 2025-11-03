@@ -1,0 +1,38 @@
+/* 마이페이지 CSS */
+
+.profile-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    transition: 0.3s ease;
+}
+
+.profile-img:hover {
+    filter: brightness(0.9);
+    transform: scale(1.02);
+}
+
+label.btn.btn-light {
+    font-size: 0.8rem;
+    padding: 3px 8px;
+    background: white;
+}
+
+#categorySection {
+    border-top: 1px solid #e9ecef;
+    padding-top: 1rem;
+}
+
+#categorySection label {
+    cursor: pointer;
+}
+
+#passwordMatchMessage {
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
+
+button[type="submit"] {
+    font-weight: 500;
+    padding: 0.6rem 0;
+}

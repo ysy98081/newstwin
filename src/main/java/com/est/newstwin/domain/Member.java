@@ -26,6 +26,9 @@ public class Member {
   @Enumerated(EnumType.STRING)
   private Role role;          // 역할
 
+  private Boolean receiveEmail = true;  // 전체 뉴스레터 수신 동의
+  private String profileImage;          // 프로필 사진
+
   private LocalDateTime createdAt;  // 생성일자
   private LocalDateTime updatedAt;  // 수정일자
 
@@ -34,15 +37,28 @@ public class Member {
     this.password = password;
     this.email = email;
     this.role = role;
+    this.receiveEmail = true;
+    this.profileImage = "/images/basic-profile.png";
     this.createdAt = LocalDateTime.now();
     this.updatedAt = LocalDateTime.now();
   }
 
-  public void update(String memberName, String password) {
-    this.memberName = memberName;
-    this.password = password;
+  public void updateInfo(String newName, String newPassword, Boolean newReceiveEmail, String newProfileImage) {
+    if (newName != null && !newName.isBlank()) {
+      this.memberName = newName;
+    }
+    if (newPassword != null && !newPassword.isBlank()) {
+      this.password = newPassword;
+    }
+    if (newReceiveEmail != null) {
+      this.receiveEmail = newReceiveEmail;
+    }
+    if (newProfileImage != null && !newProfileImage.isBlank()) {
+      this.profileImage = newProfileImage;
+    }
     this.updatedAt = LocalDateTime.now();
   }
+
 
   public enum Role {
     ROLE_USER,
