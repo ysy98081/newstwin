@@ -75,10 +75,10 @@ public class PageController {
         return "admin/dashboard";
     }
 
-    @GetMapping("/admin/users")
-    public String adminUsers() {
-        return "admin/users";
-    }
+//    @GetMapping("/admin/users")
+//    public String adminUsers() {
+//        return "admin/users";
+//    }
 
     @GetMapping("/admin/posts")
     public String adminPosts() {
@@ -91,5 +91,10 @@ public class PageController {
     @GetMapping("/admin/mails")
     public String adminMails() {
         return "admin/mails";
+    }
+
+    @GetMapping("/admin/mails-contents")
+    public String adminMailsContents() {
+      return "admin/mails-contents";
     }
 }

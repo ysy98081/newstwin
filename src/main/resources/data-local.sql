@@ -1,21 +1,29 @@
 -- MEMBER
-INSERT INTO member (member_name, email, password, role, created_at, updated_at)
-VALUES ('master', 'master@test.com', '$2b$12$Xq6gldZgCgsec6HLq7bB/e.xOTyFZq4q4eXqwXdBOXS/E2TqVaXy6', 'ROLE_ADMIN', NOW(), NOW());
-INSERT INTO member (member_name, email, password, role, created_at, updated_at)
-VALUES ('tester', 'tester@test.com', '$2b$12$Xq6gldZgCgsec6HLq7bB/e.xOTyFZq4q4eXqwXdBOXS/E2TqVaXy6', 'ROLE_USER', NOW(), NOW());
+INSERT INTO member (member_name, email, password, role, status, created_at, updated_at)
+VALUES ('master', 'master@test.com', '$2b$12$Xq6gldZgCgsec6HLq7bB/e.xOTyFZq4q4eXqwXdBOXS/E2TqVaXy6', 'ROLE_ADMIN', true,NOW(), NOW());
+INSERT INTO member (member_name, email, password, role, status, created_at, updated_at)
+VALUES ('tester', 'tester@test.com', '$2b$12$Xq6gldZgCgsec6HLq7bB/e.xOTyFZq4q4eXqwXdBOXS/E2TqVaXy6', 'ROLE_USER', true,NOW(), NOW());
 
+INSERT INTO member (member_name, email, password, role, status, created_at, updated_at)
+VALUES ('tester1', 'tester1@test.com', '$2b$12$Xq6gldZgCgsec6HLq7bB/e.xOTyFZq4q4eXqwXdBOXS/E2TqVaXy6', 'ROLE_USER', true,NOW(), NOW());
+INSERT INTO member (member_name, email, password, role, status, created_at, updated_at)
+VALUES ('tester2', 'tester2@test.com', '$2b$12$Xq6gldZgCgsec6HLq7bB/e.xOTyFZq4q4eXqwXdBOXS/E2TqVaXy6', 'ROLE_USER',true, NOW(), NOW());
 
 
 -- CATEGORY
-INSERT INTO category (category_name) VALUES ('경제');
-INSERT INTO category (category_name) VALUES ('IT');
-INSERT INTO category (category_name) VALUES ('정치');
+INSERT INTO category (category_id, category_name) VALUES (1, '경제');
+INSERT INTO category (category_id, category_name) VALUES (2, 'IT');
+INSERT INTO category (category_id, category_name) VALUES (3,'정치');
 
 -- USER_SUBSCRIPTION
 INSERT INTO user_subscription (member_id, category_id, status, created_at, updated_at)
 VALUES (1, 1, TRUE, NOW(), NOW());
 INSERT INTO user_subscription (member_id, category_id, status, created_at, updated_at)
 VALUES (2, 2, TRUE, NOW(), NOW());
+INSERT INTO user_subscription (member_id, category_id, status, created_at, updated_at)
+VALUES (3, 3, TRUE, NOW(), NOW());
+INSERT INTO user_subscription (member_id, category_id, status, created_at, updated_at)
+VALUES (4, 2, TRUE, NOW(), NOW());
 
 -- POST
 INSERT INTO post (member_id, category_id, type, title, content, count, thumbnail_url, status, created_at, updated_at)
@@ -96,4 +104,3 @@ INSERT INTO mail_log (member_id, post_id, status, retry_count, last_attempt_at, 
 VALUES (1, 1, 'PENDING', 0, NULL, NULL, NOW());
 INSERT INTO mail_log (member_id, post_id, status, retry_count, last_attempt_at, error_message, created_at)
 VALUES (2, 2, 'PENDING', 0, NULL, NULL, NOW());
-
