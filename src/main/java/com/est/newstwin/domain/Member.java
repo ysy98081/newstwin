@@ -71,6 +71,22 @@ public class Member {
     this.updatedAt = LocalDateTime.now();
   }
 
+  public void updateInfo(String newName, String newPassword, Boolean newReceiveEmail, String newProfileImage) {
+    if (newName != null && !newName.isBlank()) {
+      this.memberName = newName;
+    }
+    if (newPassword != null && !newPassword.isBlank()) {
+      this.password = newPassword;
+    }
+    if (newReceiveEmail != null) {
+      this.receiveEmail = newReceiveEmail;
+    }
+    if (newProfileImage != null && !newProfileImage.isBlank()) {
+      this.profileImage = newProfileImage;
+    }
+    this.updatedAt = LocalDateTime.now();
+  }
+
 
   public enum Role {
     ROLE_USER,
