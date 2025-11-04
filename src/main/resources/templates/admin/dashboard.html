@@ -24,7 +24,7 @@
         <div class="card shadow-sm h-100">
           <div class="card-body">
             <h5 class="fw-semibold mb-2">회원</h5>
-            <p class="fw-bold fs-5 text-primary mb-0">128명</p>
+            <p class="fw-bold fs-5 text-primary mb-0" th:text="${userCount + '명'}">0명</p>
           </div>
         </div>
       </a>
@@ -36,7 +36,7 @@
         <div class="card shadow-sm h-100">
           <div class="card-body">
             <h5 class="fw-semibold mb-2">게시글</h5>
-            <p class="fw-bold fs-5 text-success mb-0">532개</p>
+            <p class="fw-bold fs-5 text-success mb-0" th:text="${postCount + '개'}">0개</p>
           </div>
         </div>
       </a>
@@ -47,7 +47,7 @@
       <div class="card shadow-sm h-100">
         <div class="card-body">
           <h5 class="fw-semibold mb-2">구독</h5>
-          <p class="fw-bold fs-5 text-success mb-0">300개</p>
+          <p class="fw-bold fs-5 text-success mb-0" th:text="${subscriptionCount + '개'}">0개</p>
         </div>
       </div>
     </div>
@@ -58,7 +58,7 @@
         <div class="card shadow-sm h-100">
           <div class="card-body">
             <h5 class="fw-semibold mb-2">발송 메일</h5>
-            <p class="fw-bold fs-5 text-danger mb-0">412건</p>
+            <p class="fw-bold fs-5 text-danger mb-0" th:text="${mailCount + '건'}">0건</p>
           </div>
         </div>
       </a>

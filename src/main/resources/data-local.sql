@@ -95,6 +95,25 @@ VALUES (1, 2, 'news', 'OpenAI, GPT-5 상용화 예고', 'OpenAI가 GPT-5 모델�
 INSERT INTO post (member_id, category_id, type, title, content, count, thumbnail_url, status, created_at, updated_at)
 VALUES (1, 3, 'news', '탄소중립 도시 시범사업 본격화', '정부가 탄소중립 도시 구축을 위한 시범사업을 전국 5곳에서 시작했다. 친환경 교통수단 도입과 스마트에너지 관리시스템이 핵심이다.', 6, '', true, '2025-10-13 08:32:47', '2025-10-13 08:32:47');
 
+
+INSERT INTO post (member_id, category_id, type, title, content, count, thumbnail_url, status, created_at, updated_at)
+VALUES
+    (3, 2, 'community', '오늘 점심 뭐 드셨어요?',
+     '회사 근처에 새로 생긴 국밥집 다녀왔어요! 고기도 많고 국물도 진하네요. 혹시 근처에 맛집 아시는 분 추천 좀 해주세요',
+     14, '', true, '2025-10-10 12:45:22', '2025-10-10 12:45:22'),
+
+    (3, 1, 'community', '갤럭시 S24 써보신 분 계신가요?',
+     '이번에 폰 바꾸려는데 S24 카메라랑 배터리 괜찮은가요? 후기 좀 부탁드려요',
+     23, '', true, '2025-10-11 09:16:38', '2025-10-11 09:16:38'),
+
+    (4, 2, 'community', 'GPT-5 써보니까 진짜 신기하네요',
+     '어제 처음 써봤는데, 진짜 사람처럼 대화하네요. 프로그래밍 코드도 척척 써주고요. 다들 써보셨나요?',
+     31, '', true, '2025-10-12 14:58:09', '2025-10-12 14:58:09'),
+
+    (4, 3, 'community', '주말 캠핑 다녀왔어요',
+     '가평 근처로 캠핑 다녀왔는데 날씨도 좋고 공기도 맑았어요. 사진은 못 찍었지만 힐링 제대로 했네요',
+     18, '', true, '2025-10-13 08:32:47', '2025-10-13 08:32:47');
+
 -- COMMENT
 INSERT INTO comment (member_id, post_id, parent_id, content, created_at, updated_at)
 VALUES (2, 1, NULL, '좋은 글이에요', NOW(), NOW());

@@ -1,10 +1,21 @@
 package com.est.newstwin.service;
 
+import com.est.newstwin.domain.Category;
 import com.est.newstwin.domain.Post;
+<<<<<<< HEAD
 import com.est.newstwin.dto.post.PostDetailDto;
 import com.est.newstwin.dto.post.PostSummaryDto;
+=======
+import com.est.newstwin.dto.api.PostDetailDto;
+import com.est.newstwin.dto.api.PostRequestDto;
+import com.est.newstwin.dto.api.PostResponseDto;
+import com.est.newstwin.dto.api.PostSummaryDto;
+>>>>>>> 291e953 (Feat : 관리자 DB연동하기)
 import com.est.newstwin.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -75,5 +86,60 @@ public class PostService {
         post.getCreatedAt(),
         post.getCount()
     );
+  }
+
+  public List<PostResponseDto> getAllPost() {
+    List<Post> posts = postRepository.findAll();
+    return posts.stream()
+        .map(post -> new PostResponseDto(post, List.of(post.getCategory()))) // Post가 Category 하나만 가질 경우
+        .collect(Collectors.toList());
+  }
+
+  public PostResponseDto getAllPostDetail(Long postId) {
+    Post post = postRepository.findById(postId)
+        .orElseThrow(() -> new EntityNotFoundException("Post not found: " + postId));
+
+    List<Category> categories = List.of(post.getCategory());
+    return new PostResponseDto(post, categories);
+  }
+
+  @Transactional
+  public PostResponseDto togglePostStatus(Long postId) {
+    Post post = postRepository.findById(postId)
+        .orElseThrow(() -> new EntityNotFoundException("Post not found: " + postId));
+
+    post.setIsActive(!post.getIsActive());
+    postRepository.save(post);
+    List<Category> categories = List.of(post.getCategory());
+    return new PostResponseDto(post, categories);
+  }
+
+  public List<PostResponseDto> getPostsByType(String type) {
+    List<Post> posts;
+
+    if (type == null || type.isEmpty()) {
+      posts = postRepository.findAll();
+    } else {
+      posts = postRepository.findByType(type);
+    }
+
+    return posts.stream()
+        .map(post -> new PostResponseDto(post, List.of(post.getCategory())))
+        .collect(Collectors.toList());
+  }
+
+  @Transactional
+  public void updatePost(Long postId, PostRequestDto dto) {
+    Post post = postRepository.findById(postId)
+        .orElseThrow(() -> new EntityNotFoundException("Post not found: " + postId));
+
+    post.setTitle(dto.getTitle());
+    post.setContent(dto.getContent());
+    post.setUpdatedAt(LocalDateTime.now());
+  }
+
+  @Transactional
+  public void deletePost(Long postId) {
+    postRepository.deleteById(postId);
   }
 }
