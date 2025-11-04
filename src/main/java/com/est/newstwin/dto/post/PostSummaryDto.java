@@ -13,5 +13,4 @@ public class PostSummaryDto {
   LocalDateTime createdAt;
   int count;
   private String content; // 요약용
-
 }

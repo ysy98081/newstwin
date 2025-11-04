@@ -17,13 +17,23 @@ public class PostService {
 
   private final PostRepository postRepository;
 
-  public Page<PostSummaryDto> getPosts(String category, Pageable pageable) {
+  public Page<PostSummaryDto> getPosts(String category, String search, Pageable pageable) {
     Page<Post> posts;
 
+    boolean noSearch = (search == null || search.isBlank());
+
     if ("all".equalsIgnoreCase(category)) {
-      posts = postRepository.findAll(pageable);
+      if (noSearch) {
+        posts = postRepository.findAll(pageable);
+      } else {
+        posts = postRepository.searchAll(search, pageable);
+      }
     } else {
-      posts = postRepository.findByCategoryCategoryName(category, pageable);
+      if (noSearch) {
+        posts = postRepository.findByCategoryCategoryName(category, pageable);
+      } else {
+        posts = postRepository.searchByCategory(category, search, pageable);
+      }
     }
 
     // null 방어 — 빈 페이지 반환

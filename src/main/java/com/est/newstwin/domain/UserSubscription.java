@@ -70,4 +70,12 @@ public class UserSubscription {
     us.isActive = isActive;
     return us;
   }
+  public static UserSubscription createTrue(Member member, Category category) {
+    UserSubscription us = new UserSubscription();
+    us.member = member;
+    us.category = category;
+    us.isActive = true;
+    return us;
+  }
+
 }
