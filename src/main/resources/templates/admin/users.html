@@ -22,33 +22,31 @@
       </tr>
     </thead>
     <tbody class="text-center">
-    <tr th:each="member, stat : ${members}">
-      <td th:text="${stat.count}"></td>
-      <td th:text="${member.memberName}"></td>
-      <td th:text="${member.email}"></td>
-      <td th:text="${#strings.arrayJoin(member.categories, ', ')}"></td>
+      <tr th:each="member, stat : ${members}">
+        <td th:text="${stat.count}"></td>
+        <td th:text="${member.memberName}"></td>
+        <td th:text="${member.email}"></td>
+        <td th:text="${#strings.arrayJoin(member.categories, ', ')}"></td>
 
-      <td>
-        <span class="badge px-3 py-2 cursor-pointer"
-              th:classappend="${member.subscriptionStatus == '구독중'} ? ' bg-success' : ' bg-secondary'"
-              th:text="${member.subscriptionStatus}"
-              th:attr="data-user-id=${member.id},
-                       data-category-id=${#lists.isEmpty(member.categoryIds) ? 0 : member.categoryIds[0]}"
-              onclick="toggleStatus(this, 'subscription')">
-        </span>
-      </td>
+        <td>
+          <span class="badge px-3 py-2 cursor-pointer"
+                th:classappend="${member.subscriptionStatus == '구독중'} ? ' bg-success' : ' bg-secondary'"
+                th:text="${member.subscriptionStatus}"
+                th:attr="data-user-id=${member.id},
+                         data-category-id=${#lists.isEmpty(member.categoryIds) ? 0 : member.categoryIds[0]}"
+                onclick="toggleStatus(this, 'subscription')">
+          </span>
+        </td>
 
-
-      <!-- 회원 상태 -->
-      <td>
-        <span class="badge px-3 py-2 cursor-pointer"
-              th:classappend="${member.isActive} ? ' bg-success' : ' bg-danger'"
-              th:text="${member.isActive ? '활성' : '비활성'}"
-              th:attr="data-user-id=${member.id}"
-              onclick="toggleStatus(this, 'member')">
-        </span>
-      </td>
-    </tr>
+        <td>
+          <span class="badge px-3 py-2 cursor-pointer"
+                th:classappend="${member.isActive} ? ' bg-success' : ' bg-danger'"
+                th:text="${member.isActive ? '활성' : '비활성'}"
+                th:attr="data-user-id=${member.id}"
+                onclick="toggleStatus(this, 'member')">
+          </span>
+        </td>
+      </tr>
     </tbody>
   </table>
   <!-- 게시글 테이블 아래에 페이징 추가 -->

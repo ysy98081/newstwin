@@ -72,8 +72,14 @@ document.getElementById("confirmStatusBtn").addEventListener("click", () => {
   bootstrap.Modal.getInstance(statusModal).hide();
 });
 
+// 회원 관리
 async function toggleStatus(el, type) {
   const memberId = el.getAttribute("data-user-id");
+  const confirmChange = confirm("상태를 변경하시겠습니까?");
+  if (!confirmChange) {
+    return;
+  }
+
   let url;
 
   if(type === 'member') {
@@ -100,4 +106,61 @@ async function toggleStatus(el, type) {
     console.error(err);
     alert("상태 변경에 실패했습니다.");
   }
+}
+
+// 게시판 관리
+function filterByType() {
+  const type = document.getElementById("postTypeSelect").value;
+
+  fetch(`/admin/posts/filter?type=${type}`)
+  .then(res => res.text())
+  .then(html => {
+    const target = document.querySelector("#postTableBody");
+    if (!target) {
+      return;
+    }
+    target.innerHTML = html;
+  })
+  .catch(err => console.error("Error:", err));
+}
+
+function postToggleStatus(element) {
+  const postId = element.getAttribute("data-post-id");
+  const currentStatus = element.textContent.trim();
+  const newStatus = currentStatus === "활성" ? "비활성" : "활성";
+  const confirmChange = confirm(`게시글을 "${newStatus}" 상태로 변경하시겠습니까?`);
+
+  if (!confirmChange) {
+    return;
+  }
+
+  fetch(`/admin/posts/${postId}/status`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error("서버 응답 오류");
+    }
+    return response.json();
+  })
+  .then(data => {
+    if (data.isActive) {
+      element.classList.remove("bg-danger");
+      element.classList.add("bg-success");
+      element.textContent = "활성";
+    } else {
+      element.classList.remove("bg-success");
+      element.classList.add("bg-danger");
+      element.textContent = "비활성";
+    }
+
+    alert(`게시글 상태가 "${data.isActive ? '활성' : '비활성'}"으로 변경되었습니다.`);
+  })
+  .catch(error => {
+    console.error("상태 변경 실패:", error);
+    alert("상태 변경 중 오류가 발생했습니다.");
+  });
 }
