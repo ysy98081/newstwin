@@ -6,6 +6,9 @@ import com.est.newstwin.domain.Post;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -20,4 +23,8 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
   boolean existsByPostIdAndMemberId(Long postId, Long memberId);
   //게시물에 해당하는 북마크 삭제
   void deleteByPostIdAndMemberId(Long postId, Long memberId);
+  //게시물에 해당하는 전체 북마크 삭제
+  @Modifying
+  @Query("DELETE FROM Bookmark b WHERE b.post.id = :postId")
+  void deleteAllByPostId(@Param("postId") Long postId);
 }

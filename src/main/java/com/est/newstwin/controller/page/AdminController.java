@@ -1,6 +1,5 @@
 package com.est.newstwin.controller.page;
 
-import com.est.newstwin.dto.api.PostDetailDto;
 import com.est.newstwin.dto.api.PostRequestDto;
 import com.est.newstwin.dto.api.PostResponseDto;
 import com.est.newstwin.dto.member.MemberResponseDto;
@@ -9,9 +8,6 @@ import com.est.newstwin.service.MemberService;
 import com.est.newstwin.service.PostService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

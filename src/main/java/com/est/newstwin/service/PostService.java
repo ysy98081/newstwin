@@ -2,15 +2,14 @@ package com.est.newstwin.service;
 
 import com.est.newstwin.domain.Category;
 import com.est.newstwin.domain.Post;
-<<<<<<< HEAD
 import com.est.newstwin.dto.post.PostDetailDto;
 import com.est.newstwin.dto.post.PostSummaryDto;
-=======
-import com.est.newstwin.dto.api.PostDetailDto;
 import com.est.newstwin.dto.api.PostRequestDto;
 import com.est.newstwin.dto.api.PostResponseDto;
-import com.est.newstwin.dto.api.PostSummaryDto;
->>>>>>> 291e953 (Feat : 관리자 DB연동하기)
+import com.est.newstwin.repository.BookmarkRepository;
+import com.est.newstwin.repository.CommentRepository;
+import com.est.newstwin.repository.LikeRepository;
+import com.est.newstwin.repository.MailLogRepository;
 import com.est.newstwin.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
@@ -27,6 +26,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostService {
 
   private final PostRepository postRepository;
+  private final BookmarkRepository bookmarkRepository;
+  private final CommentRepository commentRepository;
+  private final MailLogRepository mailLogRepository;
+  private final LikeRepository likeRepository;
 
   public Page<PostSummaryDto> getPosts(String category, String search, Pageable pageable) {
     Page<Post> posts;
@@ -140,6 +143,10 @@ public class PostService {
 
   @Transactional
   public void deletePost(Long postId) {
+    commentRepository.deleteAllByPostId(postId);
+    bookmarkRepository.deleteAllByPostId(postId);
+    mailLogRepository.deleteAllByPostId(postId);
+    likeRepository.deleteAllByPostId(postId);
     postRepository.deleteById(postId);
   }
 }
