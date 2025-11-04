@@ -12,8 +12,9 @@ spring:
 
   servlet:
     multipart:
-      max-file-size: 10MB        # 개별 파일 최대 10MB
-      max-request-size: 20MB     # 요청 전체 최대 20MB
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 20MB
 
 jwt:
   secret: "m5fEIZP2NsnC5CFpKZxZ4dGhWQxqYGiWqkkuBRK7ChT4tf+b0mE+WbFqXvwJmT2Uo7nU6X2+E7Av0F3Q+YkM7A=="

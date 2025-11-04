@@ -6,94 +6,122 @@
     <meta charset="UTF-8">
     <title>회원정보 수정 | NewsTwin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- 공통 헤더 CSS -->
     <link rel="stylesheet" th:href="@{/css/layout/header.css}">
-    <!-- 마이페이지 전용 CSS -->
     <link rel="stylesheet" th:href="@{/css/mypage/edit.css}">
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
 </head>
 <body>
 <th:block th:replace="~{layout/header :: header}"></th:block>
 
-<main class="container py-5" style="max-width:720px;">
-    <h2 class="fw-semibold mb-4 text-center">회원 정보 수정</h2>
+<main class="mypage-container container-fluid py-5">
+    <div class="row justify-content-center gx-5">
 
-    <!-- ✅ method는 반드시 POST -->
-    <form id="updateForm" enctype="multipart/form-data">
-
-        <!-- 프로필 이미지 -->
-        <div class="text-center mb-4">
-            <div class="position-relative d-inline-block">
-                <img id="profilePreview" th:src="${member.profileImage}" alt="프로필 사진"
-                     class="rounded-circle border profile-img">
-                <label for="profileImage" class="btn btn-sm btn-light border position-absolute bottom-0 end-0">
-                    <i class="bi bi-camera"></i> 변경
-                </label>
+        <!-- 사이드 메뉴 -->
+        <aside class="col-lg-3 col-md-4 mb-4 mb-md-0">
+            <div class="list-group shadow-sm border-0 rounded-3">
+                <a th:href="@{/mypage/edit}" class="list-group-item list-group-item-action active">회원 정보 수정</a>
+                <a th:href="@{/mypage/subscription}" class="list-group-item list-group-item-action">구독 카테고리 설정</a>
+                <a th:href="@{/mypage/bookmarks}" class="list-group-item list-group-item-action">북마크한 뉴스</a>
+                <a th:href="@{/mypage/withdraw}" class="list-group-item list-group-item-action text-danger">회원 탈퇴</a>
             </div>
-            <input type="file" id="profileImage" name="profileImage" class="d-none" accept="image/*">
-        </div>
+        </aside>
 
-        <!-- 닉네임 -->
-        <div class="mb-3">
-            <label class="form-label">닉네임</label>
-            <input type="text" id="memberName" name="memberName"
-                   th:value="${member.memberName}"
-                   class="form-control">
-        </div>
+        <!-- 회원정보 수정 폼 -->
+        <section class="col-lg-8 col-md-8">
+            <div class="card border-0 shadow-sm rounded-4 p-5">
+                <h3 class="fw-semibold mb-4 text-center">회원 정보 수정</h3>
 
-        <!-- 비밀번호 -->
-        <div class="mb-3">
-            <label class="form-label">새 비밀번호</label>
-            <input type="password" id="password" name="password"
-                   class="form-control" placeholder="8~20자 영문+숫자">
-        </div>
+                <form id="updateForm" method="post" enctype="multipart/form-data">
+                    <!-- 프로필 이미지 -->
+                    <div class="text-center mb-4">
+                        <div class="position-relative d-inline-block">
+                            <img id="profilePreview"
+                                 th:src="${member.profileImage != null ? member.profileImage : '/images/basic-profile.png'}"
+                                 alt="프로필 사진"
+                                 class="rounded-circle border profile-img shadow-sm">
+                            <label for="profileImage" class="btn btn-sm btn-outline-dark position-absolute bottom-0 end-0">
+                                변경
+                            </label>
+                        </div>
+                        <input type="file" id="profileImage" name="profileImage" class="d-none" accept="image/*">
+                    </div>
 
-        <!-- 비밀번호 확인 -->
-        <div class="mb-3">
-            <label class="form-label">비밀번호 확인</label>
-            <input type="password" id="passwordConfirm" class="form-control" placeholder="비밀번호 확인">
-            <div id="passwordMatchMessage" class="form-text text-danger d-none">비밀번호가 일치하지 않습니다.</div>
-        </div>
+                    <!-- 닉네임 -->
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">닉네임</label>
+                        <input type="text" id="memberName" name="memberName"
+                               th:value="${member.memberName}"
+                               class="form-control">
+                    </div>
 
-        <!-- 이메일 수신 여부 -->
-        <div class="mb-3">
-            <label class="form-label d-block">이메일 수신 여부</label>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="receiveEmail" id="receiveTrue" value="true"
-                       th:checked="${member.receiveEmail == true}">
-                <label class="form-check-label" for="receiveTrue">수신함</label>
+                    <!-- 비밀번호 -->
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">새 비밀번호</label>
+                        <input type="password" id="password" name="password"
+                               class="form-control" placeholder="8~20자 영문+숫자">
+                    </div>
+
+                    <!-- 비밀번호 확인 -->
+                    <div class="mb-4">
+                        <label class="form-label fw-medium">비밀번호 확인</label>
+                        <input type="password" id="passwordConfirm" class="form-control" placeholder="비밀번호 확인">
+                        <div id="passwordMatchMessage" class="form-text text-danger d-none mt-1">비밀번호가 일치하지 않습니다.</div>
+                    </div>
+
+                    <!-- 뉴스레터 구독 영역 -->
+                    <div class="newsletter-box p-4 mb-5 rounded-4">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap mb-3">
+                            <div>
+                                <h6 class="fw-semibold mb-1">NewsTwin 뉴스레터 구독</h6>
+                                <p class="text-muted small mb-0">관심 뉴스 분야를 선택해 맞춤형 뉴스레터를 받아보세요.</p>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <input type="radio" class="btn-check" name="receiveEmail" id="receiveTrue" value="true"
+                                       th:checked="${T(java.lang.Boolean).TRUE.equals(member.receiveEmail)}">
+                                <label class="btn btn-subscribe" for="receiveTrue">구독함</label>
+
+                                <input type="radio" class="btn-check" name="receiveEmail" id="receiveFalse" value="false"
+                                       th:checked="${T(java.lang.Boolean).FALSE.equals(member.receiveEmail) or member.receiveEmail == null}">
+                                <label class="btn btn-subscribe" for="receiveFalse">구독안함</label>
+                            </div>
+                        </div>
+
+                        <!-- 카테고리 선택 -->
+                        <div id="categorySection" class="pt-2">
+                            <label class="form-label fw-medium d-block mb-2">관심 카테고리</label>
+                            <div class="category-buttons d-flex flex-wrap gap-2">
+                                <div th:each="category : ${categories}">
+                                    <input class="btn-check" type="checkbox"
+                                           th:id="'cat' + ${category.id}" th:value="${category.id}">
+                                    <label class="btn btn-category rounded-pill px-3 py-2"
+                                           th:for="'cat' + ${category.id}" th:text="${category.categoryName}"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 버튼 -->
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-dark w-100 py-2 rounded-3 fw-semibold">
+                            정보 수정 완료
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="receiveEmail" id="receiveFalse" value="false"
-                       th:checked="${member.receiveEmail == false}">
-                <label class="form-check-label" for="receiveFalse">수신안함</label>
-            </div>
-        </div>
-
-        <!-- 구독 카테고리 -->
-        <div id="categorySection" class="mb-4">
-            <label class="form-label d-block">구독 카테고리 선택</label>
-            <div class="row row-cols-2">
-                <div class="form-check col" th:each="category : ${categories}">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           th:id="'cat' + ${category.id}"
-                           th:value="${category.id}">
-                    <label class="form-check-label" th:for="'cat' + ${category.id}"
-                           th:text="${category.categoryName}"></label>
-                </div>
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary w-100">정보 수정 완료</button>
-    </form>
+        </section>
+    </div>
 </main>
+
+<!-- 현재 구독중인 카테고리 JS 전달 -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const subscribedCategories = [[${member.categories != null ? member.categories : '[]'}]];
+    console.log("현재 구독 중 카테고리:", subscribedCategories);
+    /*]]>*/
+</script>
 
 <th:block th:replace="~{layout/footer :: footer}"></th:block>
 
-<!-- 외부 JS 분리 -->
 <script src="/js/layout/header.js" defer></script>
 <script th:src="@{/js/mypage/edit.js}" defer></script>
 </body>

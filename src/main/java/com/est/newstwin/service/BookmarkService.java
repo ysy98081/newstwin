@@ -1,12 +1,18 @@
 package com.est.newstwin.service;
 
 import com.est.newstwin.domain.Bookmark;
+import com.est.newstwin.domain.Member;
+import com.est.newstwin.dto.mypage.BookmarkPostResponseDto;
+import com.est.newstwin.exception.CustomException;
+import com.est.newstwin.exception.ErrorCode;
 import com.est.newstwin.repository.BookmarkRepository;
 import com.est.newstwin.repository.MemberRepository;
 import com.est.newstwin.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -39,4 +45,18 @@ public class BookmarkService {
   public boolean isBookmarked(Long postId, Long memberId) {
     return bookmarkRepository.existsByPostIdAndMemberId(postId, memberId);
   }
+
+
+  @Transactional(readOnly = true)
+  public List<BookmarkPostResponseDto> getBookmarks(String email) {
+    Member member = memberRepository.findByEmail(email)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+    List<Bookmark> bookmarks = bookmarkRepository.findAllByMember(member);
+
+    return bookmarks.stream()
+            .map(b -> BookmarkPostResponseDto.from(b.getPost()))
+            .toList();
+  }
+
 }

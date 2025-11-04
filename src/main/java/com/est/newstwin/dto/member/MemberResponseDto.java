@@ -34,6 +34,7 @@ public class MemberResponseDto {
                 .role(member.getRole().name())
                 .profileImage(member.getProfileImage())
                 .receiveEmail(member.getReceiveEmail())
+                .categories(member.getCategories())
                 .build();
     }
 

@@ -1,0 +1,82 @@
+/* ===========================
+   마이페이지 메인 스타일
+   =========================== */
+
+/* 전체 레이아웃 */
+.mypage-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* 카드 */
+.card {
+    background-color: #fff;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.card h3 {
+    color: #000;
+    font-weight: 600;
+}
+
+.card p {
+    color: #6c757d;
+    font-size: 0.95rem;
+}
+
+/* 버튼 그룹 (세로 정렬) */
+.mypage-btn-group {
+    margin-top: 1.5rem;
+}
+
+.mypage-btn-group .btn {
+    width: 75%;
+    max-width: 480px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+/* 기본 버튼 */
+.btn-outline-dark {
+    border: 1px solid #dee2e6;
+    color: #212529;
+    background-color: #fff;
+}
+
+.btn-outline-dark:hover {
+    background-color: #f1f3f5;
+    border-color: #adb5bd;
+    color: #000;
+}
+
+
+/* 탈퇴 버튼 */
+.btn-outline-danger {
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    background-color: #fff;
+    transition: all 0.2s ease;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .mypage-container {
+        padding: 1rem;
+    }
+
+    .card {
+        padding: 2rem 1rem;
+    }
+
+    .mypage-btn-group .btn {
+        width: 100%;
+    }
+}
