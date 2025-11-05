@@ -31,7 +31,7 @@ VALUES (4, 2, TRUE, NOW(), NOW());
 
 -- POST
 INSERT INTO post (member_id, category_id, type, title, content, count, thumbnail_url, status, created_at, updated_at)
-VALUES (1, 1, 'news', '경제 뉴스 1', 'International Monetary Fund(IMF)가 2025년 세계 경제성장률을 약 3.2%로 상향 조정했으나, 여전히 둔화세가 뚜렷하며 보호무역·정책 불확실성이 리스크로 작용하고 있다. 긍정적 측면 성장률이 하향세에 머무르긴 하지만, 예상보다는 상향돼 경제 회복 가능성에 대한 신호가 존재한다. 기술 투자(특히 AI) 같은 신규 분야가 성장 동력을 제공하며 구조전환의 기회가 될 수 있다. 부정적 측면 여전히 리스크가 크며, 특히 무역마찰·정책 불확실성 등이 투자·고용을 억제할 수 있다. 성장률이 낮은 상태가 장기간 지속되면 구조적 침체로 전환될 우려가 있다.', 0, '', true, NOW(), NOW());
+VALUES (1, 1, 'news', '경제 뉴스 1', 'International 인플레이션 Monetary Fund(IMF)가 2025년 기준금리 세계 양적완화테이퍼링 금융 긴축통스태그플레이션 경제성장률을 약 3.2%로 상향 조정했으나, 여전히 둔화세가 뚜렷하며 보호무역·정책 불확실성이 리스크로 작용하고 있다. 긍정적 측면 성장률이 하향세에 머무르긴 하지만, 예상보다는 상향돼 경제 회복 가능성에 대한 신호가 존재한다. 기술 투자(특히 AI) 같은 신규 분야가 성장 동력을 제공하며 구조전환의 기회가 될 수 있다. 부정적 측면 여전히 리스크가 크며, 특히 무역마찰·정책 불확실성 등이 투자·고용을 억제할 수 있다. 성장률이 낮은 상태가 장기간 지속되면 구조적 침체로 전환될 우려가 있다.', 0, '', true, NOW(), NOW());
 
 INSERT INTO post (member_id, category_id, type, title, content, count, thumbnail_url, status, created_at, updated_at)
 VALUES (1, 3, 'news', '탄소중립 도시 시범사업 본격화', '정부가 탄소중립 도시 구축을 위한 시범사업을 전국 5곳에서 시작했다. 친환경 교통수단 도입과 스마트에너지 관리시스템이 핵심이다.', 6, '', true, '2025-10-13 08:32:47', '2025-10-13 08:32:47');
@@ -133,3 +133,17 @@ INSERT INTO mail_log (member_id, post_id, status, retry_count, last_attempt_at, 
 VALUES (1, 1, 'PENDING', 0, NULL, NULL, NOW());
 INSERT INTO mail_log (member_id, post_id, status, retry_count, last_attempt_at, error_message, created_at)
 VALUES (2, 2, 'PENDING', 0, NULL, NULL, NOW());
+
+-- Term dictionary --
+INSERT INTO term(term, definition, created_at, updated_at)
+VALUES
+    ('인플레이션','물가가 전반적 상승하는 현상', NOW(), NOW()),
+    ('디플레이션','물가가 전반적 하락하는 현상', NOW(), NOW()),
+    ('기준금리','중앙은행이 정하는 대표 금리', NOW(), NOW()),
+    ('양적완화','채권 매입으로 유동성 공급', NOW(), NOW()),
+    ('테이퍼링','매입 자산을 점진 축소하는 정책', NOW(), NOW()),
+    ('국채','정부가 발행하는 채권', NOW(), NOW()),
+    ('금융완화','유동성 확대해 경기 부양', NOW(), NOW()),
+    ('긴축통화','유동성 축소해 물가 억제', NOW(), NOW()),
+    ('스태그플레이션','침체 속 물가 동시 상승', NOW(), NOW()),
+    ('명목GDP','현재 가격 기준 GDP', NOW(), NOW());
