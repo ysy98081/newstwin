@@ -54,7 +54,7 @@
     </div>
 
     <!-- 본문 -->
-    <div class="post-body" th:text="${post.content}">본문 내용이 여기에 표시됩니다.</div>
+    <div class="post-body" th:utext="${post.content}"></div>
 
     <!-- 반응 버튼 -->
     <div class="reaction-bar">
@@ -148,6 +148,12 @@
     } finally {
       bookmarkBtn.disabled = false;
     }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    .forEach(el => new bootstrap.Tooltip(el));
   });
 </script>
 </body>

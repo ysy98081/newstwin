@@ -40,19 +40,19 @@ public class PostController {
 
     Sort sortObj;
     if (sort.startsWith("createdAt")) {
-      // 최신순 + 조회수 tie-break
+      // 최신순 + 조회수
       sortObj = Sort.by(
           sort.contains("desc") ? Sort.Order.desc("createdAt") : Sort.Order.asc("createdAt"),
           Sort.Order.desc("count")   // tie breaker
       );
     } else if (sort.startsWith("count")) {
-      // 인기순 + 날짜 tie-break
+      // 인기순 + 날짜
       sortObj = Sort.by(
           sort.contains("desc") ? Sort.Order.desc("count") : Sort.Order.asc("count"),
           Sort.Order.desc("createdAt") // tie breaker
       );
     } else {
-      // 기본 fallback
+      // 기본
       sortObj = Sort.by(Sort.Order.desc("createdAt"), Sort.Order.desc("count"));
     }
 

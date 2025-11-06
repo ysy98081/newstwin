@@ -14,6 +14,7 @@ import com.est.newstwin.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,6 +31,8 @@ public class PostService {
   private final CommentRepository commentRepository;
   private final MailLogRepository mailLogRepository;
   private final LikeRepository likeRepository;
+  private final TermCacheService termCacheService;
+  private final TermAnnotater TermAnnotator;
 
   public Page<PostSummaryDto> getPosts(String category, String search, Pageable pageable) {
     Page<Post> posts;
@@ -73,6 +76,10 @@ public class PostService {
     return text.length() > length ? text.substring(0, length) + "..." : text;
   }
 
+  private String safe(String s) {
+    return s == null ? "" : s;
+  }
+
   @Transactional
   public PostDetailDto getPostDetail(Long id) {
     Post post = postRepository.findById(id)
@@ -80,10 +87,14 @@ public class PostService {
 
     post.increaseCount();
 
+    Map<String,String> dict = termCacheService.dict();
+    String annotatedContent = TermAnnotator.annotate(safe(post.getContent()), dict);
+
+
     return new PostDetailDto(
         post.getId(),
         post.getTitle(),
-        post.getContent(),
+        annotatedContent,
         post.getThumbnailUrl(),
         post.getCategory().getCategoryName(),
         post.getCreatedAt(),
