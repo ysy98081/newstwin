@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.stopPropagation();
 
       if(!IS_LOGGED_IN) {
-        location.href = '/login';
+        window.location.href = '/login';
         return;
       }
 
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if(res.status === 401) {
-          location.href = '/login';
+          window.location.href = '/login';
           return;
         }
 
@@ -45,14 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
     subscribeAllBtn.addEventListener('click', async (e) => {
       e.preventDefault();
       if(!IS_LOGGED_IN){
-        location.href = '/login';
+        window.location.href = '/login';
         return;
       }
 
       try{
         const res = await fetch('/api/subscription/subscribe-all', { method:"POST" });
         if(res.status === 401){
-          location.href = '/login';
+          window.location.href = '/login';
           return;
         }
 

@@ -79,82 +79,27 @@
     </div>
 
     <!-- 댓글 -->
-    <div class="comment-section">
-      <h6 class="fw-semibold">
-      </h6>
-      <div class="border-top mt-2 pt-3 text-secondary small">
-        아직 댓글 기능은 준비 중입니다.
-      </div>
-    </div>
+    <div class="comment-section mt-4">
+      <h6 class="fw-semibold">댓글</h6>
 
-  </div>
+      <!-- 작성폼 -->
+      <div class="mb-3">
+        <textarea id="commentInput" class="form-control" rows="3" placeholder="댓글을 입력하세요"></textarea>
+        <div class="d-flex justify-content-end mt-2">
+          <button id="commentSubmit" class="btn btn-primary btn-sm">등록</button>
+        </div>
+      </div>
+
+      <!-- 목록 -->
+      <ul id="commentList" class="list-unstyled"></ul>
+
+      <!-- 무한스크롤 sentinel -->
+      <div id="commentSentinel" class="py-3 text-center text-secondary small">더 불러오는 중…</div>
+    </div>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  const likeBtn = document.getElementById('likeBtn');
-  const heartIcon = document.getElementById('heartIcon');
-  const likeCountEl = document.getElementById('likeCount');
-  const postId = likeBtn.dataset.postId;
-
-  const bookmarkBtn = document.getElementById('bookmarkBtn');
-  const bookmarkIcon = document.getElementById('bookmarkIcon');
-
-
-  document.addEventListener("DOMContentLoaded", async () => {
-    const resLike = await fetch(`/api/posts/${postId}/like`);
-    if (resLike.ok) {
-      const { liked, likeCount } = await resLike.json();
-      heartIcon.textContent = liked ? '❤️' : '🤍';
-      likeCountEl.textContent = likeCount;
-      likeBtn.dataset.liked = liked;
-    }
-
-    const resBookmark = await fetch(`/api/posts/${postId}/bookmark`);
-    if (resBookmark.ok) {
-      const { bookmarked } = await resBookmark.json();
-      bookmarkIcon.className = bookmarked ? 'bi bi-bookmark-fill' : 'bi bi-bookmark';
-      bookmarkBtn.dataset.bookmarked = bookmarked;
-    }
-  });
-
-  likeBtn.addEventListener('click', async () => {
-    const postId = likeBtn.dataset.postId;
-    likeBtn.disabled = true;
-    try {
-      const res = await fetch(`/api/posts/${postId}/like`, { method: 'POST' });
-      if (!res.ok) throw new Error('좋아요 실패');
-      const { liked, likeCount } = await res.json();
-      heartIcon.textContent = liked ? '❤️' : '🤍';
-      likeCountEl.textContent = likeCount;
-      likeBtn.dataset.liked = liked;
-    } catch (e) {
-      alert(e.message);
-    } finally {
-      likeBtn.disabled = false;
-    }
-  });
-
-  bookmarkBtn.addEventListener('click', async () => {
-    bookmarkBtn.disabled = true;
-    try {
-      const res = await fetch(`/api/posts/${postId}/bookmark`, { method: 'POST' });
-      if (!res.ok) throw new Error('북마크 실패');
-      const { bookmarked } = await res.json();
-      bookmarkIcon.className = bookmarked ? 'bi bi-bookmark-fill' : 'bi bi-bookmark';
-      bookmarkBtn.dataset.bookmarked = bookmarked;
-    } catch (e) {
-      alert(e.message);
-    } finally {
-      bookmarkBtn.disabled = false;
-    }
-  });
-</script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    .forEach(el => new bootstrap.Tooltip(el));
-  });
-</script>
+<script src="/js/postdetail.js"></script>
+<script src="/js/comments.js"></script>
 </body>
 </html>

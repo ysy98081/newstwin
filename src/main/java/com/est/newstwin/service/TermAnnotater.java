@@ -24,10 +24,6 @@ public class TermAnnotater {
   }
 
   public String annotate(String rawHtml, Map<String, String> dict) {
-    System.out.println("dict size = " + dict.size());
-    System.out.println("raw = " + rawHtml);
-    System.out.println("trie = " + (trie != null));
-
     if (rawHtml == null || rawHtml.isBlank() || dict.isEmpty()) return rawHtml;
     if (trie == null) build(dict);
 
