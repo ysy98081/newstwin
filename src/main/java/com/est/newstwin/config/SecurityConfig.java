@@ -4,6 +4,7 @@ import com.est.newstwin.config.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -63,7 +64,26 @@ public class SecurityConfig {
                                 "/api/members/check-email"  // 이메일 중복 확인 API
                         ).permitAll()
 
-                        // 그 외 페이지 중 로그인 필요한 부분
+                        //좋아요/북마크 조회는 누구나 허용
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/posts/*/like",
+                                "/api/posts/*/like/count",
+                                "/api/posts/*/bookmark",
+                                "/api/posts/*/comments"
+                        ).permitAll()
+                        //토글(변경)은 로그인 필요
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/posts/*/like",
+                                "/api/posts/*/bookmark",
+                                "/api/posts/*/comments"
+                        ).authenticated()
+
+                        .requestMatchers(HttpMethod.DELETE,
+                            "/api/posts/comments/*"
+                        ).authenticated()
+
+
+                    // 그 외 페이지 중 로그인 필요한 부분
                         .requestMatchers(
                                 "/mypage/**"
                         ).authenticated()

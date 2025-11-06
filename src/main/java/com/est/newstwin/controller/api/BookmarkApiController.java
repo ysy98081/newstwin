@@ -6,6 +6,7 @@ import com.est.newstwin.dto.post.BookmarkToggleResponseDto;
 import com.est.newstwin.repository.MemberRepository;
 import com.est.newstwin.service.BookmarkService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +26,11 @@ public class BookmarkApiController {
   @PostMapping("/{postId}/bookmark")
   public ResponseEntity<BookmarkToggleResponseDto> toggleBookmark(@PathVariable Long postId,
       @AuthenticationPrincipal UserDetails userDetails) {
+
+    if (userDetails == null) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
     Member member = memberRepository.findByEmail(userDetails.getUsername())
         .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
     boolean bookmarked = bookmarkService.toggle(postId, member.getId());
@@ -34,6 +40,11 @@ public class BookmarkApiController {
   @GetMapping("/{postId}/bookmark")
   public ResponseEntity<BookmarkStateResponseDto> getBookmarkState(@PathVariable Long postId,
       @AuthenticationPrincipal UserDetails userDetails) {
+
+    if (userDetails == null) {
+      return ResponseEntity.ok(new BookmarkStateResponseDto(false));
+    }
+
     Member member = memberRepository.findByEmail(userDetails.getUsername())
         .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
     boolean bookmarked = bookmarkService.isBookmarked(postId, member.getId());

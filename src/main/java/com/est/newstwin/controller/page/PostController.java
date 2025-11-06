@@ -2,14 +2,15 @@ package com.est.newstwin.controller.page;
 
 import com.est.newstwin.dto.post.PostDetailDto;
 import com.est.newstwin.dto.post.PostSummaryDto;
+import com.est.newstwin.repository.LikeRepository;
+import com.est.newstwin.repository.MemberRepository;
 import com.est.newstwin.service.PostService;
+import com.est.newstwin.service.LikeService;
 import com.est.newstwin.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,8 @@ public class PostController {
 
   private final PostService postService;
   private final SubscriptionService subscriptionService;
+  private final LikeService likeService;
+  private final MemberRepository memberRepository;
 
   @GetMapping("/news")
   public String getFeed(
@@ -74,9 +77,15 @@ public class PostController {
   }
 
   @GetMapping("/post/{id}")
-  public String getPostDetail(@PathVariable Long id, Model model) {
+  public String getPostDetail(@PathVariable Long id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
     PostDetailDto post = postService.getPostDetail(id);
+    long likeCount = likeService.count(post.getId());
+    boolean liked = (userDetails != null) && likeService.isLiked(post.getId(), memberRepository.findByEmail(userDetails.getUsername()).get().getId());
+
     model.addAttribute("post", post);
+    model.addAttribute("likeCount", likeCount);
+    model.addAttribute("liked", liked);
+
     return "news/detail";
   }
 }

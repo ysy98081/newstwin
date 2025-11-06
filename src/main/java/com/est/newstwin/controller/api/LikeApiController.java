@@ -34,31 +34,24 @@ public class LikeApiController {
 
   // 좋아요 상태 조회
   @GetMapping("/{postId}/like")
-  public ResponseEntity<LikeStateResponseDto> getLikeState(@PathVariable Long postId,
+  public ResponseEntity<LikeToggleResponseDto> getLikeState(@PathVariable Long postId,
       @AuthenticationPrincipal UserDetails userDetails) {
+    long likeCount = likeService.count(postId);
+
+    if (userDetails == null) {
+      return ResponseEntity.ok(new LikeToggleResponseDto(false, likeCount));
+    }
+
     Member member = memberRepository.findByEmail(userDetails.getUsername())
         .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
     boolean liked = likeService.isLiked(postId, member.getId());
-    long likeCount = likeService.count(postId);
-    return ResponseEntity.ok(new LikeStateResponseDto(liked, likeCount));
+    return ResponseEntity.ok(new LikeToggleResponseDto(liked, likeCount));
   }
 
-
-/* 시큐리티 완성 이후 적용
-  // 좋아요 토글
-  @PostMapping("/{postId}/like")
-  public ResponseEntity<LikeToggleResponseDto> toggleLike(@PathVariable Long postId,
-      @AuthenticationPrincipal Member member) {
-    var r = likeService.toggle(postId, member.getId());
-    return ResponseEntity.ok(new LikeToggleResponseDto(r.isLiked(), r.getLikeCount()));
-  }
-
-  // 좋아요 상태 조회
-  @GetMapping("/{postId}/like")
-  public ResponseEntity<LikeStateResponseDto> getLikeState(@PathVariable Long postId,
-      @AuthenticationPrincipal Member member) {
-    boolean liked = likeService.isLiked(postId, member.getId());
+  //비로그인 카운트 확인용
+  @GetMapping("/{postId}/like/count")
+  public ResponseEntity<LikeStateResponseDto> getLikeCount(@PathVariable Long postId) {
     long likeCount = likeService.count(postId);
-    return ResponseEntity.ok(new LikeStateResponseDto(liked, likeCount));
-  }*/
+    return ResponseEntity.ok(new LikeStateResponseDto(likeCount));
+  }
 }
