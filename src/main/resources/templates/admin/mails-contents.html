@@ -10,56 +10,23 @@
 <th:block th:replace="layout/header_admin :: header"></th:block>
 
 <main class="container py-5">
-  <h2 class="fw-semibold mb-4">메일 발송 로그</h2>
+  <h3 th:text="${newsTitle}" class="mb-3"></h3>
 
-  <div class="card shadow-sm rounded-3 mb-4">
-    <div class="card-header bg-light fw-semibold">
-      NewsTwin 2025.10.30 TOP5 뉴스
-    </div>
-    <div class="card-body">
-      <div class="text-center mb-4">
-        <img src="/images/sample-news.png" alt="뉴스 대표 이미지" class="img-fluid rounded-3" style="max-width: 350px;">
-      </div>
-      <h5 class="fw-bold mb-3">보낸 사람: <span class="text-secondary">NewsTwin</span></h5>
+  <div class="border rounded-3 shadow-sm p-4 bg-white">
+    <img src="/images/sample-news.png" alt="뉴스 대표 이미지"
+         class="img-fluid rounded-3" style="max-width: 350px;">
 
-      <ol class="list-group list-group-numbered">
-        <li class="list-group-item">
-          <strong>International Monetary Fund(IMF)의 세계경제전망</strong><br>
-          글로벌 성장률이 2025년 3.2%, 2026년 3.1%로 예상되며, 전년 대비 둔화세를 이어가고 있다는 발표가 나왔습니다.
-          선진국은 약 1.5% 성장, 신흥국·개도국은 약 4% 내외로 전망되어 성장 격차가 여전한 것으로 나타났습니다.
-          <span class="text-muted small">출처: IMF</span>
-        </li>
+    <ul class="list-unstyled">
+      <li class="mb-3" th:each="log : ${newsLogs}">
+        <div th:text="${log.post.content}" style="white-space: pre-line;"></div>
+        <span class="text-muted small d-block mt-2"
+              th:text="'작성일: ' + ${#temporals.format(log.post.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+      </li>
+    </ul>
+  </div>
 
-        <li class="list-group-item">
-          <strong>미국-한국 간 무역협정 체결</strong><br>
-          도널드 트럼프 미국 대통령과 이재명 한국 대통령이 만나 한국이 미국에 대규모 투자를 약속하고,
-          미국은 한국 차량에 대한 관세를 인하하는 등 협정을 마무리했습니다.
-          양국 간 무역 및 산업 공급망 재편에 변화를 예고하고 있습니다.
-          <span class="text-muted small">출처: Reuters</span>
-        </li>
-
-        <li class="list-group-item">
-          <strong>인도 경제의 탄탄한 성장 기대감</strong><br>
-          인도의 수석경제고문은 2025-26 회계연도에 GDP 성장률이 약 7%에 이를 수 있다는 낙관적 전망을 밝혔습니다.
-          글로벌 불확실성 속에서도 인도의 내수 및 거시경제 기초체력이 상대적으로 견고하다는 평가입니다.
-          <span class="text-muted small">출처: The Economic Times, Deloitte</span>
-        </li>
-
-        <li class="list-group-item">
-          <strong>일본 경제, 설비투자 중심으로 회복 조짐</strong><br>
-          일본 정부 보고서에 따르면 설비투자를 중심으로 경기가 완만히 회복 중이며 고용여건도 개선되는 조짐을 보이고 있습니다.
-          다만 소비 회복은 다소 지체되고 있고, 미국발 관세 등의 외부 리스크가 여전히 존재한다는 경고도 함께 나왔습니다.
-          <span class="text-muted small">출처: Reuters</span>
-        </li>
-
-        <li class="list-group-item">
-          <strong>세계 기업들, 소비 패턴의 변화 대응</strong><br>
-          글로벌 주요 기업들이 소비자행동의 변화와 인공지능(AI) 확산에 맞춰 마케팅 전략을 재편하고 있습니다.
-          특히 미국과 유럽에서 백엔드·사무직 중심의 자동화가 확산되며 소비 및 고용에 영향을 미칠 가능성이 있습니다.
-          <span class="text-muted small">출처: Reuters</span>
-        </li>
-      </ol>
-    </div>
+  <div class="d-flex justify-content-end gap-2 mt-4">
+    <a href="/admin/mails" class="btn btn-secondary">목록</a>
   </div>
 </main>
 

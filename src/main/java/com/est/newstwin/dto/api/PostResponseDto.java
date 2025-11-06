@@ -22,6 +22,7 @@ public class PostResponseDto {
   private List<String> categories;
   private int count;
   private Boolean isActive;
+  private String type;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 
@@ -33,6 +34,7 @@ public class PostResponseDto {
     this.thumbnailUrl = post.getThumbnailUrl();
     this.isActive = post.getIsActive();
     this.count = post.getCount();
+    this.type = post.getType();
     this.createdAt = post.getCreatedAt();
     this.updatedAt = post.getUpdatedAt();
 

@@ -1,9 +1,15 @@
 package com.est.newstwin.controller.page;
 
+import com.est.newstwin.domain.MailLog;
 import com.est.newstwin.dto.api.PostRequestDto;
 import com.est.newstwin.dto.api.PostResponseDto;
 import com.est.newstwin.dto.member.MemberResponseDto;
+import com.est.newstwin.repository.MailLogRepository;
+import com.est.newstwin.repository.MemberRepository;
+import com.est.newstwin.repository.PostRepository;
+import com.est.newstwin.repository.UserSubscriptionRepository;
 import com.est.newstwin.service.AdminService;
+import com.est.newstwin.service.MailLogService;
 import com.est.newstwin.service.MemberService;
 import com.est.newstwin.service.PostService;
 import java.util.List;
@@ -25,6 +31,8 @@ public class AdminController {
   private final MemberService memberService;
   private final PostService postService;
   private final AdminService dashboardService;
+  private final MailLogService mailLogService;
+  private final MailLogRepository mailLogRepository;
 
   @GetMapping("admin/users")
   public String getMemberList(Model model) {
@@ -53,7 +61,12 @@ public class AdminController {
   //게시판 전체 조회
   @GetMapping("admin/posts")
   public String getPostList(Model model) {
-    List<PostResponseDto> posts = postService.getAllPost();
+    List<PostResponseDto> posts = postService.getAllPost()
+        .stream()
+        .filter(post -> "news".equals(post.getType()) || "community".equals(post.getType()))
+        .sorted((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()))
+        .toList();
+
     model.addAttribute("posts", posts);
     return "admin/posts";
   }
@@ -111,5 +124,39 @@ public class AdminController {
     model.addAttribute("mailCount", mailCount);
 
     return "admin/dashboard";
+  }
+
+  // 메일 로그 목록 페이지
+  @GetMapping("/admin/mails")
+  public String getMailLogs(Model model) {
+    List<MailLog> logs = mailLogService.getAllMailLogs()
+        .stream()
+        .sorted((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()))
+        .toList();
+
+    model.addAttribute("mailLogs", logs);
+    return "admin/mails";
+  }
+
+
+  // 메일 상태 업데이트
+  @PostMapping("/admin/mails/update-status")
+  @ResponseBody
+  public ResponseEntity<Void> updateMailStatus(@RequestParam Long mailId, @RequestParam String status) {
+    mailLogService.updateMailStatus(mailId, status);
+    return ResponseEntity.ok().build();
+  }
+
+  // 메일 상세 페이지 (메일 타입만)
+  @GetMapping("/admin/mails-contents")
+  public String viewMailContents(@RequestParam String title, Model model) {
+    List<MailLog> newsLogs = mailLogRepository.findAllByPost_TitleAndPost_Type(title, "mail");
+    if (newsLogs.isEmpty()) {
+      model.addAttribute("newsTitle", "메일 로그가 없습니다.");
+    } else {
+      model.addAttribute("newsTitle", newsLogs.get(0).getPost().getTitle());
+    }
+    model.addAttribute("newsLogs", newsLogs);
+    return "admin/mails-contents";
   }
 }

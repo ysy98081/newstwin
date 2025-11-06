@@ -63,13 +63,13 @@ public class PageController {
     @GetMapping("/admin/posts-contents")
     public String adminPostsContents() { return "admin/posts-contents"; }
 
-    @GetMapping("/admin/mails")
-    public String adminMails() {
-        return "admin/mails";
-    }
+//    @GetMapping("/admin/mails")
+//    public String adminMails() {
+//        return "admin/mails";
+//    }
 
-    @GetMapping("/admin/mails-contents")
-    public String adminMailsContents() {
-      return "admin/mails-contents";
-    }
+//    @GetMapping("/admin/mails-contents")
+//    public String adminMailsContents() {
+//      return "admin/mails-contents";
+//    }
 }

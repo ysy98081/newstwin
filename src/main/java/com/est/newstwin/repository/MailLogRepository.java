@@ -4,6 +4,7 @@ import com.est.newstwin.domain.MailLog;
 import com.est.newstwin.domain.Member;
 import com.est.newstwin.domain.Post;
 import java.util.List;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +20,9 @@ public interface MailLogRepository extends JpaRepository<MailLog, Long> {
   @Modifying
   @Query("DELETE FROM MailLog m WHERE m.post.id = :postId")
   void deleteAllByPostId(@Param("postId") Long postId);
+
+  List<MailLog> findAllByPost_Type(String type);
+
+  // ✅ Post의 title과 type='mail'로 조회
+  List<MailLog> findAllByPost_TitleAndPost_Type(String title, String type);
 }

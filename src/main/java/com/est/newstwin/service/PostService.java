@@ -105,7 +105,7 @@ public class PostService {
   public List<PostResponseDto> getAllPost() {
     List<Post> posts = postRepository.findAll();
     return posts.stream()
-        .map(post -> new PostResponseDto(post, List.of(post.getCategory()))) // Post가 Category 하나만 가질 경우
+        .map(post -> new PostResponseDto(post, List.of(post.getCategory())))
         .collect(Collectors.toList());
   }
 
