@@ -49,10 +49,11 @@ public class SecurityConfig {
 
                         // 인증 없이 접근 가능한 페이지
                         .requestMatchers(
-                                "/",                 // 홈
-                                "/news/**",          // 뉴스 관련 페이지
-                                "/feed",             // 뉴스 카테고리
-                                "/h2-console/**"     // H2 콘솔
+                                "/",                  // 홈
+                                "/news/**",           // 뉴스 관련 페이지
+                                "/feed",              // 뉴스 카테고리
+                                "/h2-console/**",     // H2 콘솔
+                                "/post/**"            // 뉴스 상세
                         ).permitAll()
 
                         // 인증 없이 접근 가능한 API (운영 경로로 갱신)

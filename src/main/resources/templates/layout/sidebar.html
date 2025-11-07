@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="sidebar">
+
+  <aside class="col-12 col-md-3 col-lg-2 bg-white sidebar p-3">
+    <nav class="nav flex-column gap-1">
+
+      <!-- 전체 -->
+      <a class="nav-link" th:href="@{/news(category='all')}">전체</a>
+
+      <!-- category loop -->
+      <a class="nav-link d-flex align-items-center gap-2"
+         th:each="cat : ${categories}"
+         th:href="@{/news(category=${cat.name})}">
+        <i class="bi"
+           th:classappend="${cat.isActive} ? 'bi-star-fill text-warning' : 'bi-star text-secondary'"
+           th:attr="data-category-id=${cat.id}"
+           data-role="star"
+           style="cursor:pointer;"></i>
+        <span th:text="${cat.name}"></span>
+      </a>
+
+      <!-- all subscribe -->
+      <a href="#" id="subscribeAllBtn" class="nav-link d-flex align-items-center gap-2 mt-3">
+        <i class="bi bi-stars"></i>
+        <span>전체 구독하기</span>
+      </a>
+
+    </nav>
+  </aside>
+
+</th:block>
+</body>
+</html>
