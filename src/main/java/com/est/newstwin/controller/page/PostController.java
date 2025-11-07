@@ -80,11 +80,24 @@ public class PostController {
   public String getPostDetail(@PathVariable Long id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
     PostDetailDto post = postService.getPostDetail(id);
     long likeCount = likeService.count(post.getId());
-    boolean liked = (userDetails != null) && likeService.isLiked(post.getId(), memberRepository.findByEmail(userDetails.getUsername()).get().getId());
 
+    Long memberId = null;
+    String email = null;
+    boolean liked = false;
+
+    if (userDetails != null) {
+      email = userDetails.getUsername();
+      memberId = memberRepository.findByEmail(email).get().getId();
+      liked = likeService.isLiked(post.getId(), memberId);
+    }
+    //기본
     model.addAttribute("post", post);
     model.addAttribute("likeCount", likeCount);
     model.addAttribute("liked", liked);
+    //사이드바 카테고리용
+    model.addAttribute("categories", subscriptionService.getCategorySidebar(email));
+    //로그인여부
+    model.addAttribute("isLoggedIn", userDetails != null);
 
     return "news/detail";
   }

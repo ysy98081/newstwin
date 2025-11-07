@@ -1,3 +1,14 @@
+(() => {
+
+  const ensureAuthOrRedirect = (res) => {
+    if(res.status === 401 || res.status === 403) {
+      window.location.href = "/login";
+      return false;
+    }
+    return true;
+  };
+
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // 별 click
@@ -18,13 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
           method: "POST"
         });
 
-        if(res.status === 401) {
-          window.location.href = '/login';
-          return;
-        }
+        if(!ensureAuthOrRedirect(res)) return;
 
-        const data = await res.json();
-        const active = data.active;
+        const { active } = await res.json();
 
         star.classList.remove('bi-star','text-secondary','bi-star-fill','text-warning');
         if(active){
@@ -32,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           star.classList.add('bi-star','text-secondary');
         }
-
       } catch(e){
         alert("구독 변경 중 오류가 발생했습니다.");
       }
@@ -44,17 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if(subscribeAllBtn){
     subscribeAllBtn.addEventListener('click', async (e) => {
       e.preventDefault();
-      if(!IS_LOGGED_IN){
-        window.location.href = '/login';
-        return;
-      }
-
       try{
         const res = await fetch('/api/subscription/subscribe-all', { method:"POST" });
-        if(res.status === 401){
-          window.location.href = '/login';
-          return;
-        }
+        if(!ensureAuthOrRedirect(res)) return;
 
         document.querySelectorAll('[data-role="star"]').forEach(star => {
           star.classList.remove('bi-star','text-secondary');
@@ -67,3 +65,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+})();

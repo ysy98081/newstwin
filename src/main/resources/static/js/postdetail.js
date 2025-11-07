@@ -1,3 +1,4 @@
+(() => {
   const likeBtn = document.getElementById('likeBtn');
   const heartIcon = document.getElementById('heartIcon');
   const likeCountEl = document.getElementById('likeCount');
@@ -5,6 +6,19 @@
 
   const bookmarkBtn = document.getElementById('bookmarkBtn');
   const bookmarkIcon = document.getElementById('bookmarkIcon');
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
+  });
+
+  const ensureAuthOrRedirect = (res) => {
+    if(res.status === 401 || res.status === 403){
+      window.location.href = "/login";
+      return false;
+    }
+    return true;
+  };
 
 
   document.addEventListener("DOMContentLoaded", async () => {
@@ -40,27 +54,20 @@
 
   //좋아요 토글
   likeBtn.addEventListener('click', async () => {
-  const postId = likeBtn.dataset.postId;
   likeBtn.disabled = true;
   try {
     const res = await fetch(`/api/posts/${postId}/like`, { method: 'POST' });
-
-    if (res.status === 401 || res.status === 403) {
-      window.location.href = "/login";
-      return;
-    }
-
-    if (!res.ok) throw new Error('좋아요 실패');
-
+    if(!ensureAuthOrRedirect(res)) return;
     const { liked, likeCount } = await res.json();
     heartIcon.textContent = liked ? '❤️' : '🤍';
     likeCountEl.textContent = likeCount;
     likeBtn.dataset.liked = liked;
   } catch (e) {
-    alert(e.message);
+    alert('좋아요 실패');
   } finally {
     likeBtn.disabled = false;
-  }});
+  }
+  });
 
 
   //북마크 토글
@@ -68,26 +75,15 @@
   bookmarkBtn.disabled = true;
   try {
   const res = await fetch(`/api/posts/${postId}/bookmark`, { method: 'POST' });
-
-  if (res.status === 401 || res.status === 403) {
-      window.location.href = "/login";
-      return;
-    }
-  if (!res.ok) throw new Error('북마크 실패');
-
+  if(!ensureAuthOrRedirect(res)) return;
   const { bookmarked } = await res.json();
   bookmarkIcon.className = bookmarked ? 'bi bi-bookmark-fill' : 'bi bi-bookmark';
   bookmarkBtn.dataset.bookmarked = bookmarked;
-
 } catch (e) {
-  alert(e.message);
-
+  alert('북마크 실패');
 } finally {
   bookmarkBtn.disabled = false;
 }
 });
 
-  document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('[data-bs-toggle="tooltip"]')
-  .forEach(el => new bootstrap.Tooltip(el));
-});
+})();
