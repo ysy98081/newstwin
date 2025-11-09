@@ -128,6 +128,6 @@ public class NewsPipelineService {
      */
     private String preview(String text) {
         if (text == null) return "(null)";
-        return text.length() > 500 ? text.substring(0, 1000) + "..." : text;
+        return text.length() > 500 ? text.substring(0, 600) + "..." : text;
     }
 }

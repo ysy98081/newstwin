@@ -65,3 +65,51 @@ body {
         width: 150px;
     }
 }
+
+
+/* -----------------------------
+   입력창 버튼 통합 디자인
+----------------------------- */
+
+/* input-group을 하나의 박스로 보이게 */
+.signup-box .input-group {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+/* 입력창 (border 제거 & 여백 유지) */
+.signup-box .input-group .form-control {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+}
+
+/* 오른쪽 버튼 (중복확인 / 눈 아이콘) */
+.signup-box .input-group .btn-outline-secondary {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+}
+
+/* hover 시 배경 강조 없이 글자 색만 살짝 변경 */
+.signup-box .input-group .btn-outline-secondary:hover,
+.signup-box .input-group .btn-outline-secondary:focus,
+.signup-box .input-group .btn-outline-secondary:active {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: #000;
+}
+
+/* 아이콘 스타일 */
+.signup-box .input-group .btn-outline-secondary i {
+    font-size: 1.1rem;
+    color: #666;
+    transition: color 0.2s ease-in-out;
+}
+
+.signup-box .input-group .btn-outline-secondary:hover i {
+    color: #000;
+}

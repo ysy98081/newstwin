@@ -11,9 +11,30 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirmFeedback = document.getElementById("confirmFeedback");
     const checkEmailBtn = document.getElementById("checkEmailBtn");
 
+    const togglePasswordBtn = document.getElementById("togglePassword");
+    const toggleConfirmBtn = document.getElementById("toggleConfirm");
+
     let isEmailAvailable = false;
 
-    // 이메일 중복확인 버튼 클릭
+    // 🔹 비밀번호 표시/숨김 토글
+    togglePasswordBtn.addEventListener("click", () => {
+        const isHidden = passwordInput.type === "password";
+        passwordInput.type = isHidden ? "text" : "password";
+        const icon = togglePasswordBtn.querySelector("i");
+        icon.classList.toggle("bi-eye", isHidden);
+        icon.classList.toggle("bi-eye-slash", !isHidden);
+    });
+
+    // 🔹 비밀번호 확인 표시/숨김 토글
+    toggleConfirmBtn.addEventListener("click", () => {
+        const isHidden = confirmInput.type === "password";
+        confirmInput.type = isHidden ? "text" : "password";
+        const icon = toggleConfirmBtn.querySelector("i");
+        icon.classList.toggle("bi-eye", isHidden);
+        icon.classList.toggle("bi-eye-slash", !isHidden);
+    });
+
+    // 🔹 이메일 중복확인 버튼 클릭
     checkEmailBtn.addEventListener("click", async () => {
         const email = emailInput.value.trim();
         if (!validateEmail(email)) {
@@ -42,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 비밀번호 실시간 유효성 검사
+    // 🔹 비밀번호 실시간 유효성 검사
     passwordInput.addEventListener("input", () => {
         const password = passwordInput.value.trim();
         if (validatePassword(password)) {
@@ -57,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
         validateConfirmPassword();
     });
 
-    // 비밀번호 일치 실시간 확인
+    // 🔹 비밀번호 일치 실시간 확인
     confirmInput.addEventListener("input", validateConfirmPassword);
 
     function validateConfirmPassword() {
@@ -77,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // 폼 제출 처리
+    // 🔹 폼 제출 처리
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
@@ -127,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 정규식 유효성 함수
+    // 🔹 정규식 유효성 함수
     function validateEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);

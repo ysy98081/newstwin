@@ -45,7 +45,8 @@ public class TermAnnotater {
       String def = dict.get(matched); // 여기서 definition lookup
       if(def == null) continue;
       String repl = "<span class=\"nt-term\" data-bs-toggle=\"tooltip\" title=\"" +
-          HtmlUtils.htmlEscape(def) + "\">" + matched + "</span>";
+              HtmlUtils.htmlEscape(def) + "\">" +
+              matched + "<i class='bi bi-question-circle-fill term-icon'></i></span>";
       sb.replace(begin, end, repl);
     }
     return sb.toString();

@@ -3,13 +3,25 @@
  * - 로그인 폼 제출 시 /api/auth/login 요청
  * - JWT는 서버에서 HttpOnly 쿠키로 발급됨
  * - 로그인 성공 시 메인 페이지로 이동
+ * - 비밀번호 표시/숨김 토글 기능 추가
  */
 
 document.addEventListener("DOMContentLoaded", function () {
-    const form = document.querySelector("form");
-    const emailInput = form.querySelector('input[type="email"]');
-    const passwordInput = form.querySelector('input[type="password"]');
+    const form = document.getElementById("loginForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const togglePasswordBtn = document.getElementById("togglePassword");
+    const toggleIcon = togglePasswordBtn.querySelector("i");
 
+    // 비밀번호 표시/숨김 토글
+    togglePasswordBtn.addEventListener("click", () => {
+        const isHidden = passwordInput.type === "password";
+        passwordInput.type = isHidden ? "text" : "password";
+        toggleIcon.classList.toggle("bi-eye", isHidden);
+        toggleIcon.classList.toggle("bi-eye-slash", !isHidden);
+    });
+
+    // 로그인 폼 제출 처리
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
@@ -27,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                credentials: "include", //  HttpOnly 쿠키 자동 포함
+                credentials: "include", // HttpOnly 쿠키 자동 포함
                 body: JSON.stringify({ email, password }),
             });
 
@@ -35,7 +47,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (response.ok && result.success) {
                 alert("로그인 성공!");
-                window.location.href = "/"; // 메인 페이지로 이동
+
+                window.location.href = "/";
             } else {
                 alert(result.message || "로그인에 실패했습니다.");
             }

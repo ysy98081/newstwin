@@ -27,12 +27,19 @@ public class MemberResponseDto {
     private String subscriptionStatus;
 
     public static MemberResponseDto fromEntity(Member member) {
+        String profileImage = member.getProfileImage();
+
+        // null 이거나 공백이면 기본 이미지로 대체
+        if (profileImage == null || profileImage.isBlank()) {
+            profileImage = "/images/basic-profile.png";
+        }
+
         return MemberResponseDto.builder()
                 .id(member.getId())
                 .memberName(member.getMemberName())
                 .email(member.getEmail())
                 .role(member.getRole().name())
-                .profileImage(member.getProfileImage())
+                .profileImage(profileImage)
                 .receiveEmail(member.getReceiveEmail())
                 .categories(member.getCategories())
                 .build();

@@ -47,6 +47,9 @@ public class SecurityConfig {
                         // 비로그인 사용자만 접근 가능 (로그인 상태면 접근 불가)
                         .requestMatchers("/login", "/signup").anonymous()
 
+                        // 관리자 로그인 페이지는 누구나 접근 가능해야 함
+                        .requestMatchers("/admin/login").permitAll()
+
                         // 인증 없이 접근 가능한 페이지
                         .requestMatchers(
                                 "/",                  // 홈
@@ -86,10 +89,11 @@ public class SecurityConfig {
                                 "/api/posts/comments/*"
                         ).authenticated()
 
-                        // 그 외 페이지 중 로그인 필요한 부분
+                        // 마이페이지는 로그인 필요
                         .requestMatchers("/mypage/**").authenticated()
 
-                        // 관리자 전용 페이지 (ADMIN 권한 필요)
+                        // 관리자 로그인은 누구나 접근 가능하지만,
+                        // 그 외 /admin/** 경로는 ROLE_ADMIN만 접근 가능
                         .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
 
                         // 관리자 수동 실행용, 관리자 전용

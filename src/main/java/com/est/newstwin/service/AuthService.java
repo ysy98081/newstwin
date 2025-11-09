@@ -35,9 +35,15 @@ public class AuthService {
         Member member = memberRepository.findByEmail(requestDto.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
+
+        // 비활성화된 계정인지 확인
+        if (Boolean.FALSE.equals(member.getIsActive())) {
+            throw new CustomException(ErrorCode.ACCOUNT_DEACTIVATED);
+        }
+
         // 비밀번호 검증
         if (!passwordEncoder.matches(requestDto.getPassword(), member.getPassword())) {
-            throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
+            throw new CustomException(ErrorCode.INVALID_CREDENTIALS);
         }
 
         // JWT 토큰 발급

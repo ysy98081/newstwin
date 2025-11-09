@@ -6,16 +6,21 @@ import com.est.newstwin.dto.member.MemberUpdateRequestDto;
 import com.est.newstwin.dto.mypage.SubscriptionRequestDto;
 import com.est.newstwin.dto.mypage.SubscriptionResponseDto;
 import com.est.newstwin.service.MypageService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Duration;
+
 /**
  * 마이페이지 관련 API 컨트롤러
- * - 회원 정보 조회 및 수정
+ * - 회원 정보 조회 / 수정 / 탈퇴 / 구독 설정
  */
 @RestController
 @RequiredArgsConstructor
@@ -34,7 +39,7 @@ public class MypageController {
         return ApiResponse.success("내 정보 조회 성공", response);
     }
 
-    /** 내 정보 수정 (필요한 항목만 수정 가능) */
+    /** 내 정보 수정 */
     @PostMapping(value = "/me", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<MemberResponseDto> updateMyInfo(
             @RequestPart(value = "memberName", required = false) String memberName,
@@ -67,5 +72,28 @@ public class MypageController {
         String email = auth.getName();
         mypageService.updateSubscriptions(email, request);
         return ApiResponse.success("구독 정보가 업데이트되었습니다.", null);
+    }
+
+    /** 회원 탈퇴 (비활성화 + JWT 쿠키 만료) */
+    @PostMapping("/withdraw")
+    public ApiResponse<Void> withdrawMember(HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+
+        // DB상에서 비활성화 처리
+        mypageService.deactivateMember(email);
+
+        // JWT 쿠키 즉시 만료
+        ResponseCookie expiredCookie = ResponseCookie.from("accessToken", "")
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(0)
+                .sameSite("Lax")
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, expiredCookie.toString());
+
+        return ApiResponse.success("회원 탈퇴(비활성화) 및 로그아웃 처리 완료", null);
     }
 }

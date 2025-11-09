@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -153,5 +154,25 @@ public class MypageService {
                         );
             }
         }
+    }
+
+    /** 회원 탈퇴 (비활성화 처리) */
+    @Transactional
+    public void deactivateMember(String email) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        // 이미 비활성화된 경우
+        if (!member.getIsActive()) {
+            throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
+        }
+
+        // 계정 비활성화 처리
+        member.setIsActive(false);
+        member.setUpdatedAt(LocalDateTime.now());
+        memberRepository.save(member);
+
+        // 구독도 모두 비활성화 처리
+        userSubscriptionRepository.deactivateAllByMember(member);
     }
 }
