@@ -69,21 +69,21 @@ public class Post {
   @Column(name = "status", nullable = false)
   private Boolean isActive = true;
 
-  @Column(name = "created_at", columnDefinition = "TIMESTAMP(0)")
+  @Column(name = "created_at")
   private LocalDateTime createdAt;
 
-  @Column(name = "updated_at", columnDefinition = "TIMESTAMP(0)")
+  @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
   @PrePersist
   protected void onCreate() {
-    this.createdAt = LocalDateTime.now().withNano(0);
-    this.updatedAt = LocalDateTime.now().withNano(0);
+    this.createdAt = LocalDateTime.now();
+    this.updatedAt = LocalDateTime.now();
   }
 
   @PreUpdate
   protected void onUpdate() {
-    this.updatedAt = LocalDateTime.now().withNano(0);
+    this.updatedAt = LocalDateTime.now();
   }
 
   @OneToMany(mappedBy = "post")

@@ -1,8 +1,8 @@
 package com.est.newstwin.controller.page;
 
+import com.est.newstwin.domain.Member;
 import com.est.newstwin.dto.post.PostDetailDto;
 import com.est.newstwin.dto.post.PostSummaryDto;
-import com.est.newstwin.repository.LikeRepository;
 import com.est.newstwin.repository.MemberRepository;
 import com.est.newstwin.service.PostService;
 import com.est.newstwin.service.LikeService;
@@ -63,15 +63,25 @@ public class PostController {
 
     Page<PostSummaryDto> posts = postService.getPosts(category, search, pageable);
 
+    boolean memberReceiveEmail = false;
+    String email = null;
+
+    if (userDetails != null) {
+      email = userDetails.getUsername();
+      Member member = memberRepository.findByEmail(email).get();
+      memberReceiveEmail = Boolean.TRUE.equals(member.getReceiveEmail());
+    }
+
     model.addAttribute("posts", posts.getContent());
     model.addAttribute("page", posts);
     model.addAttribute("categoryName", category);
     model.addAttribute("sort", sort);
     model.addAttribute("search", search);
-
-    String email = (userDetails != null ? userDetails.getUsername() : null);
     model.addAttribute("categories", subscriptionService.getCategorySidebar(email));
+    //로그인 여부
     model.addAttribute("isLoggedIn", userDetails != null);
+    //구독여부
+    model.addAttribute("memberReceiveEmail", memberReceiveEmail);
 
     return "news/list";
   }
@@ -84,12 +94,16 @@ public class PostController {
     Long memberId = null;
     String email = null;
     boolean liked = false;
+    boolean memberReceiveEmail = false;
 
     if (userDetails != null) {
       email = userDetails.getUsername();
-      memberId = memberRepository.findByEmail(email).get().getId();
+      Member member = memberRepository.findByEmail(email).get();
+      memberId = member.getId();
       liked = likeService.isLiked(post.getId(), memberId);
+      memberReceiveEmail = Boolean.TRUE.equals(member.getReceiveEmail());
     }
+
     //기본
     model.addAttribute("post", post);
     model.addAttribute("likeCount", likeCount);
@@ -98,7 +112,8 @@ public class PostController {
     model.addAttribute("categories", subscriptionService.getCategorySidebar(email));
     //로그인여부
     model.addAttribute("isLoggedIn", userDetails != null);
-
+    //구독여부
+    model.addAttribute("memberReceiveEmail", memberReceiveEmail);
     return "news/detail";
   }
 }

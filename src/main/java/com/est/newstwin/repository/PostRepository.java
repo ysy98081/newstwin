@@ -13,22 +13,38 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-  Page<Post> findByCategoryCategoryName(String categoryName, Pageable pageable);
-  // 전체 검색 (category = all) 제목기반으로 요구서에 적혀있는데 내용도 검색하게 일단 구현
+  //검색 없이 전체
+  Page<Post> findByTypeAndIsActive(String type, boolean isActive, Pageable pageable);
+  //검색 없이 카테고리
+  Page<Post> findByTypeAndIsActiveAndCategory_CategoryName(String type, boolean isActive, String category, Pageable pageable);
+  // 검색 + 전체
   @Query("""
-      SELECT p FROM Post p
-      WHERE LOWER(p.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
-         OR LOWER(p.content) LIKE LOWER(CONCAT('%', :keyword, '%'))
-      """)
-  Page<Post> searchAll(@Param("keyword") String keyword, Pageable pageable);
-  // 특정 category + 검색
+    SELECT p FROM Post p
+    WHERE p.type = :type
+      AND p.isActive = true
+      AND (
+          LOWER(p.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
+          OR LOWER(p.content) LIKE LOWER(CONCAT('%', :keyword, '%'))
+      )
+    """)
+  Page<Post> searchAll(
+      @Param("type") String type,
+      @Param("keyword") String keyword,
+      Pageable pageable);
+  // 검색 + 카테고리
   @Query("""
-      SELECT p FROM Post p
-      WHERE p.category.categoryName = :category
-        AND (LOWER(p.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
-          OR LOWER(p.content) LIKE LOWER(CONCAT('%', :keyword, '%')))
-      """)
-  Page<Post> searchByCategory(@Param("category") String category,
+    SELECT p FROM Post p
+    WHERE p.type = :type
+      AND p.isActive = true
+      AND p.category.categoryName = :category
+      AND (
+          LOWER(p.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
+          OR LOWER(p.content) LIKE LOWER(CONCAT('%', :keyword, '%'))
+      )
+    """)
+  Page<Post> searchByCategory(
+      @Param("type") String type,
+      @Param("category") String category,
       @Param("keyword") String keyword,
       Pageable pageable);
 

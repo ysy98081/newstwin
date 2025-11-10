@@ -10,7 +10,6 @@ import com.est.newstwin.repository.MemberRepository;
 import com.est.newstwin.repository.PostRepository;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -74,7 +73,7 @@ public class CommentService {
         postId, PageRequest.of(page, size));
 
     if (roots.isEmpty()) {
-      return new CommentPageResponse(List.of(), false, page);
+      return new CommentPageResponse(List.of(), false, page , 0L);
     }
 
     List<Long> rootIds = roots.getContent().stream().map(Comment::getId).toList();
@@ -111,6 +110,7 @@ public class CommentService {
                 ch.getCreatedAt().format(fmt),
                 ch.isDeleted(),
                 mineChild,
+                ch.getMember().getProfileImage(),
                 List.of()
             );
           })
@@ -124,12 +124,15 @@ public class CommentService {
           root.getCreatedAt().format(fmt),
           root.isDeleted(),   // 삭제되면 엔티티에서 content와 deleted 세팅됨(아래 softDelete 참고)
           mineRoot,
+          root.getMember().getProfileImage(),
           childDtos
       );
     }).toList();
 
     boolean hasNext = roots.hasNext();
-    return new CommentPageResponse(items, hasNext, hasNext ? page + 1 : page);
+    long totalCount = commentRepo.countByPostId(postId);
+
+    return new CommentPageResponse(items, hasNext, hasNext ? page + 1 : page, totalCount);
   }
 
   // 소프트 삭제
