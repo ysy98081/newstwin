@@ -108,6 +108,14 @@ public class SecurityConfig {
 
                 // 접근 거부 시 처리 (로그인된 사용자가 /login 접근 시 홈으로 리다이렉트)
                 .exceptionHandling(ex -> ex
+                    .authenticationEntryPoint((request, response, authException) -> {
+                      String uri = request.getRequestURI();
+                      if (uri.startsWith("/admin")) {
+                        response.sendRedirect("/admin/login");
+                      } else {
+                        response.sendRedirect("/login");
+                      }
+                    })
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
                             response.sendRedirect("/"); // 홈으로 이동
                         })

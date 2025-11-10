@@ -45,31 +45,6 @@ public class PageController {
         return "admin/login";
     }
 
-//    @GetMapping("/admin")
-//    public String adminDashboard() {
-//        return "admin/dashboard";
-//    }
-
-//    @GetMapping("/admin/users")
-//    public String adminUsers() {
-//        return "admin/users";
-//    }
-
-//    @GetMapping("/admin/posts")
-//    public String adminPosts() {
-//        return "admin/posts";
-//    }
-
     @GetMapping("/admin/posts-contents")
     public String adminPostsContents() { return "admin/posts-contents"; }
-
-//    @GetMapping("/admin/mails")
-//    public String adminMails() {
-//        return "admin/mails";
-//    }
-
-//    @GetMapping("/admin/mails-contents")
-//    public String adminMailsContents() {
-//      return "admin/mails-contents";
-//    }
 }

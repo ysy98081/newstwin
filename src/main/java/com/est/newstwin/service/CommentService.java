@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -141,5 +143,17 @@ public class CommentService {
     }
     // 소프트 삭제
     comment.softDelete();
+  }
+
+  //관리자 댓글 관리
+  public Page<Comment> getAllComments(int page, int size) {
+    Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+    return commentRepo.findAll(pageable);
+  }
+
+  public void deleteComment(Long id) {
+    Comment comment = commentRepo.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다."));
+    comment.setDeleted(true);
   }
 }

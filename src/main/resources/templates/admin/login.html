@@ -12,12 +12,22 @@
 <main class="container py-5" style="max-width:400px;">
     <img src="../images/logo-title-none.png" alt="">
     <h2 class="text-center mb-4 fw-semibold">관리자 로그인</h2>
-    <form>
-        <div class="mb-3"><label class="form-label">아이디</label><input class="form-control" type="text"></div>
-        <div class="mb-3"><label class="form-label">비밀번호</label><input class="form-control" type="password"></div>
-        <button class="btn btn-dark w-100 mt-3">LOGIN</button>
+    <form id="loginForm">
+      <div class="mb-3">
+        <label class="form-label text-muted small">ID</label>
+        <input type="email" class="form-control" id="email" placeholder="아이디" required>
+      </div>
+      <div class="mb-4 position-relative">
+        <label class="form-label text-muted small">PW</label>
+        <div class="input-group">
+          <input type="password" class="form-control" id="password" placeholder="패스워드" required>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-dark w-100 mb-3 fw-semibold">LOGIN</button>
     </form>
 </main>
+
+<script src="../js/admin/login.js"></script>
 
 <th:block th:replace="layout/footer :: footer"></th:block>
 </body>

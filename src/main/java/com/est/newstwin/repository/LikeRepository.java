@@ -14,8 +14,5 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
   boolean existsByPostIdAndMemberId(Long postId, Long memberId);
   long countByPostId(Long postId);
   void deleteByPostIdAndMemberId(Long postId, Long memberId);
-
-  @Modifying
-  @Query("DELETE FROM Like l WHERE l.post.id = :postId")
-  void deleteAllByPostId(@Param("postId") Long postId);
+  void deleteAllByPostId(Long postId);
 }

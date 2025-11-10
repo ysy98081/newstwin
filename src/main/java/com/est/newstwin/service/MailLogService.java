@@ -14,9 +14,7 @@ public class MailLogService {
   private final MailLogRepository mailLogRepository;
 
   public List<MailLog> getAllMailLogs() {
-    List<MailLog> result = mailLogRepository.findAllByPost_Type("mail");
-    System.out.println("📨 Mail logs count = " + result.size());
-    return result;
+    return mailLogRepository.findAll(); // ✅ 이렇게 되어야 함
   }
 
   // 상태 업데이트

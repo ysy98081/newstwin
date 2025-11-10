@@ -1,16 +1,26 @@
 package com.est.newstwin.controller.page;
 
+import com.est.newstwin.domain.Comment;
 import com.est.newstwin.domain.MailLog;
+import com.est.newstwin.domain.Member;
 import com.est.newstwin.dto.api.PostRequestDto;
 import com.est.newstwin.dto.api.PostResponseDto;
+import com.est.newstwin.dto.auth.LoginRequestDto;
+import com.est.newstwin.dto.auth.LoginResponseDto;
 import com.est.newstwin.dto.member.MemberResponseDto;
+import com.est.newstwin.exception.CustomException;
+import com.est.newstwin.exception.ErrorCode;
 import com.est.newstwin.repository.MailLogRepository;
-import com.est.newstwin.repository.PostRepository;
+import com.est.newstwin.repository.MemberRepository;
 import com.est.newstwin.service.AdminService;
+import com.est.newstwin.service.AuthService;
+import com.est.newstwin.service.CommentService;
 import com.est.newstwin.service.MailLogService;
 import com.est.newstwin.service.MemberService;
 import com.est.newstwin.service.PostService;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +28,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,9 +41,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequiredArgsConstructor
@@ -38,7 +53,9 @@ public class AdminController {
   private final AdminService adminService;
   private final MailLogService mailLogService;
   private final MailLogRepository mailLogRepository;
-  private final PostRepository postRepository;
+  private final CommentService commentService;
+  private final AuthService authService;
+  private final MemberRepository memberRepository;
 
   @GetMapping("admin/users")
   public String getMemberList(@RequestParam(defaultValue = "0") int page,
@@ -85,7 +102,6 @@ public class AdminController {
         .sorted((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()))
         .toList();
 
-    // 2️⃣ type 필터가 지정되었을 경우, 해당 타입만 필터링
     if (type != null && !type.isEmpty()) {
       allPosts = allPosts.stream()
           .filter(post -> type.equals(post.getType()))
@@ -207,4 +223,76 @@ public class AdminController {
     model.addAttribute("newsLogs", newsLogs);
     return "admin/mails-contents";
   }
+
+  //댓글 페이지
+  @GetMapping("admin/comments")
+  public String getCommentsList(@RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size,
+      Model model) {
+    Page<Comment> commentsPage = commentService.getAllComments(page, size);
+    model.addAttribute("comments", commentsPage.getContent());
+    model.addAttribute("page", commentsPage);
+    return "admin/comments";
+  }
+
+  @PostMapping("/admin/comments/{id}/delete")
+  @ResponseBody
+  public ResponseEntity<?> deleteComment(@PathVariable Long id) {
+    commentService.deleteComment(id);
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/admin/login")
+  public ResponseEntity<?> adminLogin( @Valid @RequestBody LoginRequestDto requestDto,
+      HttpServletResponse response) {
+
+    LoginResponseDto loginResponse = authService.login(requestDto);
+    Member member = memberRepository.findByEmail(requestDto.getEmail())
+        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+    if (!"ROLE_ADMIN".equals(member.getRole().name())) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN)
+          .body(Map.of(
+              "success", false,
+              "message", "관리자 권한이 없습니다."
+          ));
+    }
+
+    ResponseCookie cookie = ResponseCookie.from("accessToken", loginResponse.getAccessToken())
+        .httpOnly(true)
+        .secure(false)
+        .path("/")
+        .maxAge(Duration.ofHours(1))
+        .sameSite("Lax")
+        .build();
+
+    response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
+    return ResponseEntity.ok(Map.of(
+        "success", true,
+        "message", "관리자 로그인 성공",
+        "memberName", loginResponse.getMemberName()
+    ));
+  }
+
+  @PostMapping("/admin/logout")
+  @ResponseBody
+  public ResponseEntity<?> logout(HttpServletResponse response) {
+    ResponseCookie expiredCookie = ResponseCookie.from("accessToken", "")
+        .path("/")
+        .maxAge(0)
+        .httpOnly(true)
+        .build();
+
+    response.addHeader(HttpHeaders.SET_COOKIE, expiredCookie.toString());
+    return ResponseEntity.ok(Map.of("success", true, "message", "로그아웃 완료"));
+  }
+
+  @ModelAttribute("isAdminLoggedIn")
+  public boolean isAdminLoggedIn() {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    return auth != null && auth.isAuthenticated() &&
+        !"anonymousUser".equals(auth.getPrincipal());
+  }
+
 }

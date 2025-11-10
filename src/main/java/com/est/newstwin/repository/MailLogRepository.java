@@ -18,11 +18,7 @@ public interface MailLogRepository extends JpaRepository<MailLog, Long> {
   List<MailLog> findAllByPost(Post post);
   List<MailLog> findAllByStatus(String status);
 
-  @Modifying
-  @Query("DELETE FROM MailLog m WHERE m.post.id = :postId")
-  void deleteAllByPostId(@Param("postId") Long postId);
-
-  List<MailLog> findAllByPost_Type(String type);
+  void deleteAllByPostId(Long postId);
 
   List<MailLog> findAllByPost_TitleAndPost_Type(String title, String type);
 

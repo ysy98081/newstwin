@@ -24,7 +24,5 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
   //게시물에 해당하는 북마크 삭제
   void deleteByPostIdAndMemberId(Long postId, Long memberId);
   //게시물에 해당하는 전체 북마크 삭제
-  @Modifying
-  @Query("DELETE FROM Bookmark b WHERE b.post.id = :postId")
-  void deleteAllByPostId(@Param("postId") Long postId);
+  void deleteAllByPostId(Long postId);
 }

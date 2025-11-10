@@ -20,9 +20,7 @@ public class AdminService {
   private final UserSubscriptionRepository subscriptionRepository;
   private final MailLogRepository mailRepository;
 
-  public long getUserCount() {
-    return memberRepository.count();
-  }
+  public long getUserCount() { return memberRepository.count(); }
 
   public long getPostCount() {
     return postRepository.count();

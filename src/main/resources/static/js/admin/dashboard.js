@@ -152,3 +152,32 @@ function mailToggleStatus(badge) {
     console.error(error);
   });
 }
+
+
+//댓글 관리
+async function commentToggleStatus(el) {
+  const commentId = el.getAttribute('data-comment-id');
+  const confirmed = confirm('댓글을 삭제하시겠습니까?');
+  if (!confirmed) return;
+
+  const res = await fetch(`/admin/comments/${commentId}/delete`, { method: 'POST' });
+  if (res.ok) {
+    alert('댓글이 삭제되었습니다.');
+    location.reload();
+  } else {
+    alert('삭제 실패');
+  }
+}
+
+//로그아웃
+async function logoutAdmin() {
+  if (!confirm("로그아웃 하시겠습니까?")) return;
+
+  await fetch("/admin/logout", {
+    method: "POST",
+    credentials: "include"
+  });
+
+  alert("로그아웃 되었습니다.");
+  window.location.href = "/admin/login";
+}

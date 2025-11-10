@@ -9,10 +9,21 @@
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav gap-2">
-                <li class="nav-item"><a class="nav-link" th:href="@{/admin/users}">회원관리</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/admin/posts}">게시판관리</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/admin/mails}">메일발송로그</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/admin/login}">로그인</a></li>
+                <li class="nav-item"><a class="nav-link fw-semibold" th:href="@{/admin/users}">회원관리</a></li>
+                <li class="nav-item"><a class="nav-link fw-semibold" th:href="@{/admin/posts}">게시판관리</a></li>
+                <li class="nav-item"><a class="nav-link fw-semibold" th:href="@{/admin/comments}">댓글관리</a></li>
+                <li class="nav-item"><a class="nav-link fw-semibold" th:href="@{/admin/mails}">메일발송로그</a></li>
+                <li class="nav-item" th:if="${!(isAdminLoggedIn ?: false)}">
+                  <a class="nav-link text-primary" th:href="@{/admin/login}">
+                    <i class="bi bi-box-arrow-in-right me-1"></i> 로그인
+                  </a>
+                </li>
+
+                <li class="nav-item" th:if="${isAdminLoggedIn ?: false}">
+                  <a class="nav-link text-danger" href="#" onclick="logoutAdmin()">
+                    <i class="bi bi-box-arrow-right me-1"></i> 로그아웃
+                  </a>
+                </li>
             </ul>
         </div>
     </nav>
