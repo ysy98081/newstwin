@@ -74,6 +74,7 @@ public class CommentApiController {
         saved.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
         saved.isDeleted(),
         true,
+        me.getProfileImage(),
         List.of()
     );
     return ResponseEntity.ok(dto);

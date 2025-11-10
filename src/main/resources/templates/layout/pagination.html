@@ -1,9 +1,9 @@
-<nav aria-label="Page navigation example" th:fragment="pagination(page)">
+<nav aria-label="Page navigation" th:fragment="pagination(page, baseUrl)">
   <ul class="pagination justify-content-center mt-4">
     <!-- 이전 버튼 -->
     <li class="page-item" th:classappend="${page.hasPrevious()} ? '' : 'disabled'">
       <a class="page-link"
-          th:href="@{/admin/posts(page=${page.number - 1}, size=${page.size},
+          th:href="@{${baseUrl}(page=${page.number - 1}, size=${page.size},
                    type=${selectedType != null and !selectedType.isEmpty() ? selectedType : null})}"
           tabindex="-1">이전</a>
     </li>
@@ -13,7 +13,7 @@
         th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
         th:classappend="${page.number == i} ? 'active'">
       <a class="page-link"
-          th:href="@{/admin/posts(page=${i}, size=${page.size},
+          th:href="@{${baseUrl}(page=${i}, size=${page.size},
                    type=${selectedType != null and !selectedType.isEmpty() ? selectedType : null})}"
           th:text="${i + 1}"></a>
     </li>
@@ -21,7 +21,7 @@
     <!-- 다음 버튼 -->
     <li class="page-item" th:classappend="${page.hasNext()} ? '' : 'disabled'">
       <a class="page-link"
-          th:href="@{/admin/posts(page=${page.number + 1}, size=${page.size},
+          th:href="@{${baseUrl}(page=${page.number + 1}, size=${page.size},
                    type=${selectedType != null and !selectedType.isEmpty() ? selectedType : null})}">
         다음
       </a>

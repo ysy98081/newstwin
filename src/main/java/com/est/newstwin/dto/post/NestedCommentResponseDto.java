@@ -14,5 +14,6 @@ public class NestedCommentResponseDto {
   private String createdAt;   // yyyy-MM-dd HH:mm
   private boolean deleted;
   private boolean mine;
+  private String profileImage;
   private List<NestedCommentResponseDto> children; // depth=1까지만 채움
 }

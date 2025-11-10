@@ -154,85 +154,35 @@ VALUES
 
 -- COMMENT
 INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
+VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:01', '2025-02-01 14:32:01');
 INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
+VALUES (1, 1, NULL, '두 번째 댓글 테스트입니다', false, '2025-02-01 14:32:02', '2025-02-01 14:32:02');
 INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
+VALUES (1, 1, NULL, '세 번째 댓글 테스트입니다', false, '2025-02-01 14:32:03', '2025-02-01 14:32:03');
 INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
+VALUES (1, 1, NULL, '네 번째 댓글 테스트입니다', false, '2025-02-01 14:32:04', '2025-02-01 14:32:04');
 INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
+VALUES (1, 1, NULL, '다섯 번째 댓글 테스트입니다', false, '2025-02-01 14:32:05', '2025-02-01 14:32:05');
 INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
+VALUES (1, 1, NULL, '여섯 번째 댓글 테스트입니다', false, '2025-02-01 14:32:06', '2025-02-01 14:32:06');
 INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
+VALUES (1, 1, NULL, '일곱 번째 댓글 테스트입니다', false, '2025-02-01 14:32:07', '2025-02-01 14:32:07');
 INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
+VALUES (1, 1, NULL, '여덟 번째 댓글 테스트입니다', false, '2025-02-01 14:32:08', '2025-02-01 14:32:08');
 INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
+VALUES (1, 1, NULL, '아홉 번째 댓글 테스트입니다', false, '2025-02-01 14:32:09', '2025-02-01 14:32:09');
 INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
+VALUES (1, 1, NULL, '열 번째 댓글 테스트입니다', false, '2025-02-01 14:32:10', '2025-02-01 14:32:10');
 INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
+VALUES (1, 1, NULL, '열한 번째 댓글 테스트입니다', false, '2025-02-01 14:32:15', '2025-02-01 14:32:15');
 INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
+VALUES (1, 1, NULL, '열두 번째 댓글 테스트입니다', false, '2025-02-01 14:32:16', '2025-02-01 14:32:16');
 INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
+VALUES (1, 1, NULL, '열세 번째 댓글 테스트입니다', false, '2025-02-01 14:32:17', '2025-02-01 14:32:17');
 INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
+VALUES (1, 1, NULL, '열네 번째 댓글 테스트입니다', false, '2025-02-01 14:32:18', '2025-02-01 14:32:18');
 INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
-INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
-VALUES (1, 1, NULL, '첫 댓글 테스트입니다', false, '2025-02-01 14:32:11', '2025-02-01 14:32:11');
+VALUES (1, 1, NULL, '열다섯 번째 댓글 테스트입니다', false, '2025-02-01 14:32:19', '2025-02-01 14:32:19');
 
 INSERT INTO comment (member_id, post_id, parent_id, content, deleted, created_at, updated_at)
 VALUES (2, 1, 1, '이건 첫 댓글에 대한 대댓글입니다', false, '2025-02-01 14:33:20', '2025-02-01 14:33:20');

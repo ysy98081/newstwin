@@ -27,6 +27,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "comment")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder

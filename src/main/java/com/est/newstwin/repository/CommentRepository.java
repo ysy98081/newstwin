@@ -22,7 +22,10 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
   @EntityGraph(attributePaths = {"member", "parent"})
   List<Comment> findByParentIdInOrderByCreatedAtAsc(List<Long> parentIds);
 
-  @Modifying
-  @Query("DELETE FROM Comment c WHERE c.post.id = :postId")
-  void deleteAllByPostId(@Param("postId") Long postId);
+  @EntityGraph(attributePaths = {"member", "post"})
+  Page<Comment> findAll(Pageable pageable);
+  
+  void deleteAllByPostId(Long postId);
+
+  long countByPostId(Long postId);
 }

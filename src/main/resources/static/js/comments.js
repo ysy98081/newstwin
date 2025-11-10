@@ -30,18 +30,23 @@
     const li = document.createElement('li');
     li.className = 'mb-3';
     li.innerHTML = `
-      <div class="p-2">
-        <div class="small text-secondary">${esc(root.authorName)} · ${root.createdAt}</div>
-        <div class="mt-1">${esc(root.content)}</div>
-        <div class="mt-1 d-flex gap-2">
+      <div class="p-2 d-flex">
+         <img src="${root.profileImage ? root.profileImage : DEFAULT_PROFILE_URL}"
+         class="rounded-circle me-2"
+         style="width:32px;height:32px;object-fit:cover;">
+         <div>
+          <div class="small text-secondary">${esc(root.authorName)} · ${root.createdAt}</div>
+          <div class="mt-1">${esc(root.content)}</div>
+          <div class="mt-1 d-flex gap-2">
           <button class="btn btn-link btn-sm p-0 reply-btn">답글</button>
-          ${root.mine ? `<button class="btn btn-link btn-sm p-0 text-danger delete-btn" data-id="${root.id}">삭제</button>` : ''}
-        </div>
-        <div class="reply-box d-none mt-2">
-          <textarea class="form-control reply-input" rows="2" placeholder="답글을 입력하세요"></textarea>
-          <div class="d-flex justify-content-end mt-2">
-            <button class="btn btn-primary btn-sm reply-submit">등록</button>
-          </div>
+          ${root.mine && !root.deleted ? `<button class="btn btn-link btn-sm p-0 text-danger delete-btn" data-id="${root.id}">삭제</button>` : ''}
+         </div>
+         <div class="reply-box d-none mt-2">
+            <textarea class="form-control reply-input" rows="2" placeholder="답글을 입력하세요"></textarea>
+            <div class="d-flex justify-content-end mt-2">
+              <button class="btn btn-primary btn-sm reply-submit">등록</button>
+            </div>
+         </div>
         </div>
       </div>
       <ul class="list-unstyled ms-4 border-start ps-3 children"></ul>
@@ -53,13 +58,18 @@
       const cli = document.createElement('li');
       cli.className = 'mb-2';
       cli.innerHTML = `
-        <div class="p-2">
-          <div class="small text-secondary">${esc(ch.authorName)} · ${ch.createdAt}</div>
-          <div class="mt-1">${esc(ch.content)}</div>
-          <div class="mt-1 d-flex gap-2">
-            ${ch.mine ? `<button class="btn btn-link btn-sm p-0 text-danger delete-btn" data-id="${ch.id}">삭제</button>` : ''}
+        <div class="p-2 d-flex">
+          <img src="${ch.profileImage ? ch.profileImage : DEFAULT_PROFILE_URL}"
+             class="rounded-circle me-2"
+             style="width:28px;height:28px;object-fit:cover;">
+          <div>
+            <div class="small text-secondary">${esc(ch.authorName)} · ${ch.createdAt}</div>
+            <div class="mt-1">${esc(ch.content)}</div>
+            <div class="mt-1 d-flex gap-2">
+            ${ch.mine && !ch.deleted ? `<button class="btn btn-link btn-sm p-0 text-danger delete-btn" data-id="${ch.id}">삭제</button>` : ''}
+            </div>
           </div>
-        </div>
+        </div> 
       `;
       // 자식 삭제
       const childDeleteBtn = cli.querySelector('.delete-btn');
@@ -129,6 +139,10 @@
       const res = await fetch(`/api/posts/${postId}/comments?page=${page}&size=${size}`);
       if (!res.ok) return;
       const data = await res.json(); // { items:[root...], hasNext, nextPage }
+
+      if (page === 0) {
+        document.getElementById('commentTotal').textContent = data.totalCount;
+      }
 
       (data.items || []).forEach(renderRoot);
 

@@ -35,21 +35,23 @@ public class PostService {
   private final TermAnnotater TermAnnotator;
 
   public Page<PostSummaryDto> getPosts(String category, String search, Pageable pageable) {
+    final String TYPE = "news";
+    final boolean ACTIVE = true;
     Page<Post> posts;
 
     boolean noSearch = (search == null || search.isBlank());
 
     if ("all".equalsIgnoreCase(category)) {
       if (noSearch) {
-        posts = postRepository.findAll(pageable);
+        posts = postRepository.findByTypeAndIsActive(TYPE, ACTIVE, pageable);
       } else {
-        posts = postRepository.searchAll(search, pageable);
+        posts = postRepository.searchAll(TYPE, search, pageable);
       }
     } else {
       if (noSearch) {
-        posts = postRepository.findByCategoryCategoryName(category, pageable);
+        posts = postRepository.findByTypeAndIsActiveAndCategory_CategoryName(TYPE, ACTIVE, category, pageable);
       } else {
-        posts = postRepository.searchByCategory(category, search, pageable);
+        posts = postRepository.searchByCategory(TYPE, category, search, pageable);
       }
     }
 

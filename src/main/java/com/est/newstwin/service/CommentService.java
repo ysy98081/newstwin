@@ -10,7 +10,6 @@ import com.est.newstwin.repository.MemberRepository;
 import com.est.newstwin.repository.PostRepository;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -18,6 +17,8 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,7 +75,7 @@ public class CommentService {
         postId, PageRequest.of(page, size));
 
     if (roots.isEmpty()) {
-      return new CommentPageResponse(List.of(), false, page);
+      return new CommentPageResponse(List.of(), false, page , 0L);
     }
 
     List<Long> rootIds = roots.getContent().stream().map(Comment::getId).toList();
@@ -111,6 +112,7 @@ public class CommentService {
                 ch.getCreatedAt().format(fmt),
                 ch.isDeleted(),
                 mineChild,
+                ch.getMember().getProfileImage(),
                 List.of()
             );
           })
@@ -124,12 +126,15 @@ public class CommentService {
           root.getCreatedAt().format(fmt),
           root.isDeleted(),   // 삭제되면 엔티티에서 content와 deleted 세팅됨(아래 softDelete 참고)
           mineRoot,
+          root.getMember().getProfileImage(),
           childDtos
       );
     }).toList();
 
     boolean hasNext = roots.hasNext();
-    return new CommentPageResponse(items, hasNext, hasNext ? page + 1 : page);
+    long totalCount = commentRepo.countByPostId(postId);
+
+    return new CommentPageResponse(items, hasNext, hasNext ? page + 1 : page, totalCount);
   }
 
   // 소프트 삭제
@@ -141,5 +146,17 @@ public class CommentService {
     }
     // 소프트 삭제
     comment.softDelete();
+  }
+
+  //관리자 댓글 관리
+  public Page<Comment> getAllComments(int page, int size) {
+    Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+    return commentRepo.findAll(pageable);
+  }
+
+  public void deleteComment(Long id) {
+    Comment comment = commentRepo.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다."));
+    comment.setDeleted(true);
   }
 }

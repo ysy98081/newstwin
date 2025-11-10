@@ -14,7 +14,8 @@
          th:each="cat : ${categories}"
          th:href="@{/news(category=${cat.name})}">
         <i class="bi"
-           th:classappend="${cat.isActive} ? 'bi-star-fill text-warning' : 'bi-star text-secondary'"
+           th:classappend="${memberReceiveEmail} ? (${cat.isActive} ? 'bi-star-fill text-warning' : 'bi-star text-secondary')
+                                  : 'bi-star text-secondary'"
            th:attr="data-category-id=${cat.id}"
            data-role="star"
            style="cursor:pointer;"></i>
