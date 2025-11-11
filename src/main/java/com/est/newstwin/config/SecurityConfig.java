@@ -3,6 +3,7 @@ package com.est.newstwin.config;
 import com.est.newstwin.config.jwt.JwtAuthenticationFilter;
 import com.est.newstwin.config.oauth2.CustomOAuth2UserService;
 import com.est.newstwin.config.oauth2.OAuth2SuccessHandler;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -126,6 +127,12 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex
                     .authenticationEntryPoint((request, response, authException) -> {
                       String uri = request.getRequestURI();
+                      // 댓글 / 좋아요 / 북마크 API 전용 401 처리
+                      if (uri.startsWith("/api/posts") &&
+                          (uri.contains("/like") || uri.contains("/bookmark") || uri.contains("/comments"))) {
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        return;
+                      }
                       if (uri.startsWith("/admin")) {
                         response.sendRedirect("/admin/login");
                       } else {

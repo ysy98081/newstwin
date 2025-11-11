@@ -11,7 +11,7 @@ public class TermAnnotater {
 
   private volatile AhoCorasickDoubleArrayTrie<String> trie;
 
-  // TermCacheService.dict() 호출 시마다 갱신되도록 외부에서 reload 호출하게 설계
+  // TermCacheService.dict() 호출 시마다 갱신되도록 외부에서 reload 호출
   public void build(Map<String, String> dict) {
     if (dict == null || dict.isEmpty()) return;
 
@@ -31,8 +31,15 @@ public class TermAnnotater {
 
     // matches 는 start/end 위치가 필요
     trie.parseText(rawHtml, (begin, end, value) -> {
-      hits.add(new int[]{begin, end});
+      // 앞뒤 문자 확인 (스페이스·점·쉼표·따옴표)
+      char before = begin > 0 ? rawHtml.charAt(begin - 1) : ' ';
+      char after = end < rawHtml.length() ? rawHtml.charAt(end) : ' ';
+
+      if (isBoundary(before) && (isBoundary(after) || isParticle(after))) {
+        hits.add(new int[]{begin, end});
+      }
     });
+
 
     if (hits.isEmpty()) return rawHtml;
 
@@ -50,5 +57,13 @@ public class TermAnnotater {
       sb.replace(begin, end, repl);
     }
     return sb.toString();
+  }
+
+  private boolean isBoundary(char c) {
+    return Character.isWhitespace(c) || c == '.' || c == ',' || c == '"';
+  }
+
+  private boolean isParticle(char c) {
+    return "이가을를은는의로과와도만".indexOf(c) >= 0;
   }
 }

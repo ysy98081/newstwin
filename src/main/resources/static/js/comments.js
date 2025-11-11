@@ -10,7 +10,7 @@
   let loading = false;
   let done = false;
 
-  // 401/403 → 로그인 이동
+  // 401/403/302 → 로그인 이동
   const ensureAuthOrRedirect = (res) => {
     if (res.status === 401 || res.status === 403) {
       window.location.href = "/login";
@@ -41,14 +41,19 @@
           <button class="btn btn-link btn-sm p-0 reply-btn">답글</button>
           ${root.mine && !root.deleted ? `<button class="btn btn-link btn-sm p-0 text-danger delete-btn" data-id="${root.id}">삭제</button>` : ''}
          </div>
-         <div class="reply-box d-none mt-2">
-            <textarea class="form-control reply-input" rows="2" placeholder="답글을 입력하세요"></textarea>
+        </div>
+       </div>
+         <div class="reply-box d-none mt-2 ms-5">
+            <div class="d-flex align-items-start">
+              <img src="${root.profileImage ? root.profileImage : DEFAULT_PROFILE_URL}" 
+                class="rounded-circle me-2" style="width:32px;height:32px;object-fit:cover;">
+              <textarea class="form-control reply-input" rows="2" placeholder="답글을 입력하세요"></textarea>
+            </div>
             <div class="d-flex justify-content-end mt-2">
               <button class="btn btn-primary btn-sm reply-submit">등록</button>
             </div>
          </div>
         </div>
-      </div>
       <ul class="list-unstyled ms-4 border-start ps-3 children"></ul>
     `;
 
