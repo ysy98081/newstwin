@@ -132,17 +132,20 @@ function mailToggleStatus(badge) {
   if (!badge || badge.textContent.trim() !== '재전송') return;
 
   const mailId = badge.dataset.mailId;
-  const confirmChange = confirm('메일을 재전송 하시겠습니까?');
+  const confirmChange = confirm('메일을 실제로 재전송 하시겠습니까?');
   if (!confirmChange) return;
 
-  fetch('/admin/mails/update-status', {
+  fetch('/admin/mails/resend', {
     method: 'POST',
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: `mailId=${encodeURIComponent(mailId)}&status=SUCCESS`
+    body: `mailId=${encodeURIComponent(mailId)}`
   })
   .then(response => {
     if (!response.ok) throw new Error('재전송 실패');
-    // UI 업데이트
+    return response.text();
+  })
+  .then(msg => {
+    alert(msg);
     badge.textContent = '성공';
     badge.classList.remove('bg-danger');
     badge.classList.add('bg-success');

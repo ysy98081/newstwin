@@ -1,8 +1,10 @@
 package com.est.newstwin.controller.page;
 
+import com.est.newstwin.domain.Category;
 import com.est.newstwin.domain.Comment;
 import com.est.newstwin.domain.MailLog;
 import com.est.newstwin.domain.Member;
+import com.est.newstwin.domain.Post;
 import com.est.newstwin.dto.api.PostRequestDto;
 import com.est.newstwin.dto.api.PostResponseDto;
 import com.est.newstwin.dto.auth.LoginRequestDto;
@@ -12,6 +14,7 @@ import com.est.newstwin.exception.CustomException;
 import com.est.newstwin.exception.ErrorCode;
 import com.est.newstwin.repository.MailLogRepository;
 import com.est.newstwin.repository.MemberRepository;
+import com.est.newstwin.scheduler.NewsletterScheduler;
 import com.est.newstwin.service.AdminService;
 import com.est.newstwin.service.AuthService;
 import com.est.newstwin.service.CommentService;
@@ -202,13 +205,23 @@ public class AdminController {
     return "admin/mails";
   }
 
-
   // 메일 상태 업데이트
   @PostMapping("/admin/mails/update-status")
   @ResponseBody
   public ResponseEntity<Void> updateMailStatus(@RequestParam Long mailId, @RequestParam String status) {
     mailLogService.updateMailStatus(mailId, status);
     return ResponseEntity.ok().build();
+  }
+
+  // 메일 재전송
+  @PostMapping("/admin/mails/resend")
+  public ResponseEntity<String> resendMail(@RequestParam Long mailId) {
+    try {
+      mailLogService.resendMail(mailId);
+      return ResponseEntity.ok("메일 재전송 성공!");
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body("메일 재전송 실패: " + e.getMessage());
+    }
   }
 
   // 메일 상세 페이지 (메일 타입만)

@@ -31,6 +31,19 @@ spring:
             redirect-uri: "{baseUrl}/login/oauth2/code/google"
             client-name: Google
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GOOGLE_CLIENT_ID_AJ}
+    password: ${GOOGLE_CLIENT_SECRET_AJ}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
 jwt:
   secret: ${JWT_SECRET}
   expiration-time: ${JWT_EXPIRATION:3600000} # 기본값 1시간

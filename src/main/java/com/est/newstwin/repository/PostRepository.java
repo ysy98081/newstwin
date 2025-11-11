@@ -96,4 +96,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             @Param("type") String type,
             Pageable pageable
     );
+
+  @Query("SELECT p FROM Post p WHERE p.category.id = :categoryId AND p.type = 'news' AND p.createdAt >= :since")
+  List<Post> findRecentNewsByCategory(@Param("categoryId") Long categoryId, @Param("since") LocalDateTime since);
+
 }
