@@ -1,6 +1,7 @@
 package com.est.newstwin.service;
 
 import com.est.newstwin.domain.Category;
+import com.est.newstwin.domain.Member;
 import com.est.newstwin.domain.Post;
 import com.est.newstwin.dto.post.PostDetailDto;
 import com.est.newstwin.dto.post.PostSummaryDto;
@@ -10,6 +11,7 @@ import com.est.newstwin.repository.BookmarkRepository;
 import com.est.newstwin.repository.CommentRepository;
 import com.est.newstwin.repository.LikeRepository;
 import com.est.newstwin.repository.MailLogRepository;
+import com.est.newstwin.repository.MemberRepository;
 import com.est.newstwin.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
@@ -18,7 +20,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +37,8 @@ public class PostService {
   private final MailLogRepository mailLogRepository;
   private final LikeRepository likeRepository;
   private final TermCacheService termCacheService;
-  private final TermAnnotater TermAnnotator;
+  private final TermAnnotater termAnnotator;
+  private final MemberRepository memberRepository;
 
   public Page<PostSummaryDto> getPosts(String category, String search, Pageable pageable) {
     final String TYPE = "news";
@@ -72,6 +78,26 @@ public class PostService {
         )
     );
   }
+
+
+  @Transactional
+  public Page<PostResponseDto> getBoardPosts(String type, String search, Pageable pageable) {
+    if (search == null || search.trim().isEmpty()) {
+      search = ""; // searchAll() 안의 LIKE 조건에 대응
+    }
+
+    Pageable sortedPageable = PageRequest.of(
+        pageable.getPageNumber(),
+        pageable.getPageSize(),
+        Sort.by(Sort.Direction.DESC, "createdAt")
+    );
+
+    return postRepository.searchAll(type, search, sortedPageable)
+        .map(PostResponseDto::forBoard);
+  }
+
+
+
   // 문자열 요약 유틸
   private String abbreviate(String text, int length) {
     if (text == null) return "";
@@ -90,7 +116,7 @@ public class PostService {
     post.increaseCount();
 
     Map<String,String> dict = termCacheService.dict();
-    String annotatedContent = TermAnnotator.annotate(safe(post.getContent()), dict);
+    String annotatedContent = termAnnotator.annotate(safe(post.getContent()), dict);
 
 
     return new PostDetailDto(
@@ -104,6 +130,24 @@ public class PostService {
     );
   }
 
+  @Transactional
+  public Long createPost(String type, PostRequestDto dto, UserDetails userDetails) {
+    String email = userDetails.getUsername();
+    Member member = memberRepository.findByEmail(email)
+        .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다: " + email));
+
+    Post post = Post.builder()
+        .title(dto.getTitle())
+        .content(dto.getContent())
+        .member(member)
+        .category(null)   // 뉴스아님
+        .type(type)       // 게시판
+        .count(0)
+        .isActive(true)
+        .build();
+    return postRepository.save(post).getId();
+  }
+
   public List<PostResponseDto> getAllPost() {
     List<Post> posts = postRepository.findAll();
     return posts.stream()
@@ -114,8 +158,9 @@ public class PostService {
   public PostResponseDto getAllPostDetail(Long postId) {
     Post post = postRepository.findById(postId)
         .orElseThrow(() -> new EntityNotFoundException("Post not found: " + postId));
-
-    List<Category> categories = List.of(post.getCategory());
+    post.increaseCount();
+    List<Category> categories =
+        post.getCategory() != null ? List.of(post.getCategory()) : List.of();
     return new PostResponseDto(post, categories);
   }
 
@@ -193,6 +238,4 @@ public class PostService {
             ))
             .collect(Collectors.toList());
   }
-
-
 }

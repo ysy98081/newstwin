@@ -20,6 +20,33 @@
     return true;
   };
 
+  document.addEventListener("DOMContentLoaded", () => {
+    const deleteBtn = document.getElementById("deleteBtn");
+    if (!deleteBtn) return;
+
+    deleteBtn.addEventListener("click", async () => {
+      const postId = deleteBtn.dataset.postId;
+      const confirmed = confirm("정말 이 글을 삭제하시겠습니까?");
+      if (!confirmed) return;
+
+      try {
+        const res = await fetch(`/board/delete/${postId}`, { method: 'DELETE' });
+        if (res.ok) {
+          alert("게시글이 삭제되었습니다.");
+          window.location.href = "/board"; // 목록 페이지로 이동
+        } else if (res.status === 401) {
+          alert("로그인이 필요합니다.");
+          window.location.href = "/login";
+        } else {
+          alert("삭제 중 오류가 발생했습니다.");
+        }
+      } catch (e) {
+        console.error(e);
+        alert("삭제 요청 실패");
+      }
+    });
+  });
+
 
   document.addEventListener("DOMContentLoaded", async () => {
     //좋아요 count는 무조건 공개

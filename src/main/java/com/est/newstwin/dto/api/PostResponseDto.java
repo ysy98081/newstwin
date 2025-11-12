@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostResponseDto {
   private Long id;
+  private Long memberId;
   private String memberName;
   private String title;
   private String content;
@@ -28,6 +29,7 @@ public class PostResponseDto {
 
   public PostResponseDto(Post post, List<Category> categories) {
     this.id = post.getId();
+    this.memberId = post.getMember().getId();
     this.memberName = post.getMember().getMemberName();
     this.title = post.getTitle();
     this.content = post.getContent();
@@ -45,5 +47,10 @@ public class PostResponseDto {
     } else {
       this.categories = List.of();
     }
+  }
+
+  // 게시판 전용 (정적 팩토리)
+  public static PostResponseDto forBoard(Post post) {
+    return new PostResponseDto(post, List.of());
   }
 }
