@@ -145,8 +145,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
 
             if (response.ok && data.success) {
-                alert("회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.");
-                window.location.href = "/login";
+                alert("회원가입이 완료되었습니다. 이메일 인증 메일을 확인해주세요!");
+                window.location.href = "/verify-info";
             } else {
                 alert(data.message || "회원가입에 실패했습니다.");
             }

@@ -1,0 +1,182 @@
+/* -------------------------------
+   NewsTwin - 게시글 리스트 스타일 개선
+   톤: 블랙 / 그레이 / 하늘색
+--------------------------------*/
+
+body {
+    background-color: #f9f9f9;
+    color: #222;
+    font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 2rem 3rem;     /* 여백 확장 */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    max-width: 1200px;      /* 너무 넓어지는 것 방지 */
+    margin: 0 auto;         /* 중앙 정렬 */
+}
+
+/* 헤더 */
+.list-header {
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 0.75rem;
+}
+
+.category-title {
+    font-weight: 700;
+    color: #111;
+}
+
+/* 검색창 (input+button 일체형) */
+.search-form {
+    position: relative;
+    width: 220px;
+}
+
+.search-input {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 6px 35px 6px 10px;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #6dc6ff;
+    box-shadow: 0 0 5px rgba(109,198,255,0.3);
+}
+
+.search-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #6dc6ff;
+    border: none;
+    color: white;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.search-btn:hover {
+    background-color: #5bb0e8;
+}
+
+/* 정렬 버튼 */
+.btn-sort {
+    border: 1px solid #ccc;
+    color: #444;
+    background-color: #fff;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    padding: 5px 10px;
+    transition: all 0.2s;
+}
+
+.btn-sort:hover {
+    color: #111;
+    border-color: #6dc6ff;
+    background-color: rgba(109,198,255,0.1);
+}
+
+/* 카드 */
+.list-card {
+    border: 1px solid #ebebeb;
+    border-radius: 12px;
+    transition: all 0.25s ease;
+}
+
+.list-card:hover {
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+    border-color: #6dc6ff;
+    transform: translateY(-2px);
+}
+
+.card-thumb img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* 제목 */
+.post-title {
+    color: #111;
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.post-title:hover {
+    color: #6dc6ff;
+}
+
+/* 메타정보 */
+.post-meta {
+    color: #777;
+    font-size: 0.85rem;
+}
+
+/* 본문 요약 (2~3줄까지 … 처리) */
+.post-preview {
+    color: #555;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 3.9em;
+}
+
+/* 페이지네이션 */
+.pagination {
+    margin-top: 2rem;
+}
+
+.pagination .page-link {
+    color: #555;
+    border-radius: 6px;
+    margin: 0 3px;
+    border: 1px solid #ddd;
+    transition: all 0.2s;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #6dc6ff;
+    border-color: #6dc6ff;
+    color: #fff;
+}
+
+.pagination .page-link:hover {
+    background-color: rgba(109,198,255,0.15);
+    border-color: #6dc6ff;
+    color: #111;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #aaa;
+    background-color: #f1f1f1;
+    border-color: #ddd;
+}
+
+/* 링크 */
+.news-link {
+    display: block;
+}
+
+/* footer 붙이기 */
+footer {
+    margin-top: auto !important;
+}

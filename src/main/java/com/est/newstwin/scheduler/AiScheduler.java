@@ -36,7 +36,7 @@ public class AiScheduler {
      * Cron 표현식: 초 분 시 일 월 요일
      * → 0, 15, 30, 45분마다 실행
      */
-    @Scheduled(cron = "0 0/15 * * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 0 9 * * *", zone = "Asia/Seoul")
     public synchronized void runPipelineEvery15Min() {
         // 중복 실행 방지
         if (isRunning) {
