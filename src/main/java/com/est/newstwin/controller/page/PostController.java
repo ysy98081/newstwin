@@ -95,19 +95,23 @@ public class PostController {
     String email = null;
     boolean liked = false;
     boolean memberReceiveEmail = false;
+    Member loginUser = null;
 
     if (userDetails != null) {
       email = userDetails.getUsername();
-      Member member = memberRepository.findByEmail(email).get();
-      memberId = member.getId();
+      loginUser = memberRepository.findByEmail(email).orElse(null);
+    }
+    if (loginUser != null) {
+      memberId = loginUser.getId();
       liked = likeService.isLiked(post.getId(), memberId);
-      memberReceiveEmail = Boolean.TRUE.equals(member.getReceiveEmail());
+      memberReceiveEmail = Boolean.TRUE.equals(loginUser.getReceiveEmail());
     }
 
     //기본
     model.addAttribute("post", post);
     model.addAttribute("likeCount", likeCount);
     model.addAttribute("liked", liked);
+    model.addAttribute("loginUser", loginUser);
     //사이드바 카테고리용
     model.addAttribute("categories", subscriptionService.getCategorySidebar(email));
     //로그인여부

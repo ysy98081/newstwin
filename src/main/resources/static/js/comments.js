@@ -4,6 +4,7 @@
   const inputEl = document.getElementById('commentInput');
   const submitEl = document.getElementById('commentSubmit');
   const sentinel = document.getElementById('commentSentinel');
+  const currentProfileImg = LOGIN_PROFILE_URL || DEFAULT_PROFILE_URL;
 
   let page = 0;
   const size = 20;
@@ -36,7 +37,9 @@
          style="width:32px;height:32px;object-fit:cover;">
          <div>
           <div class="small text-secondary">${esc(root.authorName)} · ${root.createdAt}</div>
-          <div class="mt-1">${esc(root.content)}</div>
+            ${root.deleted 
+                ? '<span class="text-secondary fst-italic">삭제된 댓글입니다.</span>' 
+                : esc(root.content)}
           <div class="mt-1 d-flex gap-2">
           <button class="btn btn-link btn-sm p-0 reply-btn">답글</button>
           ${root.mine && !root.deleted ? `<button class="btn btn-link btn-sm p-0 text-danger delete-btn" data-id="${root.id}">삭제</button>` : ''}
@@ -45,7 +48,7 @@
        </div>
          <div class="reply-box d-none mt-2 ms-5">
             <div class="d-flex align-items-start">
-              <img src="${root.profileImage ? root.profileImage : DEFAULT_PROFILE_URL}" 
+              <img src="${currentProfileImg}"
                 class="rounded-circle me-2" style="width:32px;height:32px;object-fit:cover;">
               <textarea class="form-control reply-input" rows="2" placeholder="답글을 입력하세요"></textarea>
             </div>
@@ -69,7 +72,9 @@
              style="width:28px;height:28px;object-fit:cover;">
           <div>
             <div class="small text-secondary">${esc(ch.authorName)} · ${ch.createdAt}</div>
-            <div class="mt-1">${esc(ch.content)}</div>
+              ${ch.deleted 
+                  ? '<span class="text-secondary fst-italic">삭제된 댓글입니다.</span>' 
+                  : esc(ch.content)}
             <div class="mt-1 d-flex gap-2">
             ${ch.mine && !ch.deleted ? `<button class="btn btn-link btn-sm p-0 text-danger delete-btn" data-id="${ch.id}">삭제</button>` : ''}
             </div>
@@ -144,6 +149,18 @@
       const res = await fetch(`/api/posts/${postId}/comments?page=${page}&size=${size}`);
       if (!res.ok) return;
       const data = await res.json(); // { items:[root...], hasNext, nextPage }
+
+      // ----- 댓글이 0개일 때 처리 -----
+      if (page === 0 && data.totalCount === 0) {
+        listEl.innerHTML = `
+        <div class="text-center text-secondary my-3">
+          댓글이 없습니다.
+        </div>
+      `;
+        done = true;
+        sentinel.textContent = '';
+        return;
+      }
 
       if (page === 0) {
         document.getElementById('commentTotal').textContent = data.totalCount;

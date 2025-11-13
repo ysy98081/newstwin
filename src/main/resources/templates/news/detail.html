@@ -102,6 +102,7 @@
         <div class="comment-section mt-4">
           <h6 class="fw-semibold">댓글 <span id="commentTotal"></span></h6>
 
+          <!-- 작성폼 -->
           <div class="comment-input-area mb-3">
             <div class="d-flex align-items-start gap-2">
               <img th:src="${loginUser != null && loginUser.profileImage != null ? loginUser.profileImage : '/images/basic-profile.png'}"
@@ -113,7 +114,9 @@
             </div>
           </div>
 
+          <!-- 목록 -->
           <ul id="commentList" class="list-unstyled"></ul>
+          <!-- 무한스크롤 sentinel -->
           <div id="commentSentinel" class="py-3 text-center text-secondary small">더 불러오는 중…</div>
         </div>
       </div>
@@ -128,7 +131,7 @@
 <script th:inline="javascript">
   const IS_LOGGED_IN = [[${isLoggedIn}]];
   const MEMBER_RECEIVE_EMAIL = [[${memberReceiveEmail}]];
-  const LOGIN_PROFILE_URL = [[${loginUser != null ? loginUser.profileUrl : null}]];
+  const LOGIN_PROFILE_URL = /*[[${loginUser != null ? loginUser.profileImage : null}]]*/ null;
   const DEFAULT_PROFILE_URL = '/images/basic-profile.png';
 </script>
 

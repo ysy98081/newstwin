@@ -155,10 +155,13 @@ public class PostService {
         .collect(Collectors.toList());
   }
 
+  @Transactional
   public PostResponseDto getAllPostDetail(Long postId) {
     Post post = postRepository.findById(postId)
         .orElseThrow(() -> new EntityNotFoundException("Post not found: " + postId));
+
     post.increaseCount();
+
     List<Category> categories =
         post.getCategory() != null ? List.of(post.getCategory()) : List.of();
     return new PostResponseDto(post, categories);

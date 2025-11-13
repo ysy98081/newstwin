@@ -23,4 +23,4 @@ aws:
   secret-access-key: ${AWS_SECRET_ACCESS_KEY}
   region: ap-northeast-2
   s3:
-    bucket-name: newstwin-prod-bucket
+    bucket-name: newstwin-pjt-bucket

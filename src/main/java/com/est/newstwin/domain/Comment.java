@@ -80,6 +80,5 @@ public class Comment {
   //soft delete용
   public void softDelete() {
     this.deleted = true;
-    this.content = "[삭제된 댓글입니다]";
   }
 }

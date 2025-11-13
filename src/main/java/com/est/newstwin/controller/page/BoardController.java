@@ -61,13 +61,13 @@ public class BoardController {
     Long memberId = null;
     boolean liked = false;
     boolean isAuthor = false;
+    Member loginUser = null;
 
     if (userDetails != null) {
-      Member member = memberRepository.findByEmail(userDetails.getUsername())
+      loginUser = memberRepository.findByEmail(userDetails.getUsername())
           .orElseThrow(() -> new RuntimeException("Member not found"));
-      memberId = member.getId();
+      memberId = loginUser.getId();
       liked = likeService.isLiked(post.getId(), memberId);
-
       if (Objects.equals(post.getMemberId(), memberId)) {
         isAuthor = true;
       }
@@ -76,6 +76,7 @@ public class BoardController {
     model.addAttribute("likeCount", likeCount);
     model.addAttribute("liked", liked);
     model.addAttribute("isAuthor", isAuthor);
+    model.addAttribute("loginUser", loginUser);
     model.addAttribute("isLoggedIn", userDetails != null);
 
     return "board/detail";

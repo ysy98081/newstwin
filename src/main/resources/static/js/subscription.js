@@ -23,7 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (!MEMBER_RECEIVE_EMAIL) {  // ← 템플릿에서 전역으로 박아주는 값
-        alert("뉴스레터 수신이 꺼져 있어 구독 변경을 할 수 없습니다.");
+        if (confirm("뉴스레터 수신이 꺼져 있어 구독 변경을 할 수 없습니다.\n수신 설정 페이지로 이동할까요?")) {
+          window.location.href = "/mypage/subscription";
+        }
         return;
       }
 
@@ -62,7 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (!MEMBER_RECEIVE_EMAIL) {
-        alert("전체 뉴스레터 수신이 꺼져 있어 전체 구독 실행 불가합니다.");
+        if (confirm("뉴스레터 수신이 꺼져 있어 구독 변경을 할 수 없습니다.\n수신 설정 페이지로 이동할까요?")) {
+          window.location.href = "/mypage/subscription";
+        }
         return;
       }
 
