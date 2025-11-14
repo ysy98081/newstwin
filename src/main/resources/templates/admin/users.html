@@ -25,6 +25,7 @@
         <th style="width: 10%;">닉네임</th>
         <th style="width: 15%;">이메일</th>
         <th style="width: 30%;">구독분야</th>
+        <th style="width: 10%;">이메일인증상태</th>
         <th style="width: 10%;">메일상태</th>
         <th style="width: 10%;">구독상태</th>
         <th style="width: 10%;">상태</th>
@@ -36,6 +37,13 @@
         <td th:text="${member.memberName}"></td>
         <td th:text="${member.email}"></td>
         <td th:text="${#strings.arrayJoin(member.categories, ', ')}"></td>
+        <td>
+          <span class="badge px-3 py-2"
+                th:classappend="${member.isVerified != null && member.isVerified} ? ' bg-success' : ' bg-secondary'"
+                th:text="${member.isVerified != null && member.isVerified ? '인증' : '미인증'}">
+          </span>
+        </td>
+
         <td>
           <span class="badge px-3 py-2 cursor-pointer"
                 th:classappend="${member.receiveEmail != null && member.receiveEmail} ? ' bg-success' : ' bg-secondary'"

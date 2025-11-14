@@ -19,6 +19,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
   long countByReceiveEmailTrue();
   long countByReceiveEmailTrueAndUpdatedAtBetween(LocalDateTime start, LocalDateTime end);
 
-  @Query("SELECT m FROM Member m WHERE m.receiveEmail = true AND m.isActive = true")
+  @Query("SELECT m FROM Member m WHERE m.receiveEmail = true AND m.isActive = true AND m.isVerified = true")
   List<Member> findAllActiveSubscribers();
 }

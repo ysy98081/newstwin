@@ -53,7 +53,13 @@ async function toggleStatus(el, type) {
       el.textContent = data.isActive ? '활성' : '비활성';
       el.className = `badge px-3 py-2 cursor-pointer ${data.isActive ? 'bg-success' : 'bg-danger'}`;
     }
-
+    else if (type === 'receiveEmail') {
+      // 메일 수신/거부 토글
+      response = await fetch(`/admin/users/${memberId}/receive`, { method: 'PATCH' });
+      data = await response.json();
+      el.textContent = data.receiveEmail ? '수신' : '거부';
+      el.className = `badge px-3 py-2 cursor-pointer ${data.receiveEmail ? 'bg-success' : 'bg-secondary'}`;
+    }
     else if (type === 'subscription') {
       const rawIds = el.getAttribute("data-category-ids");
       if (!rawIds || rawIds.trim() === "") {
@@ -78,14 +84,6 @@ async function toggleStatus(el, type) {
       const categoryCell = el.closest("tr").querySelector("td:nth-child(4)");
       categoryCell.textContent = data.categories?.join(', ') || '';
     }
-    else if (type === 'receiveEmail') {
-      // 메일 수신/거부 토글
-      response = await fetch(`/admin/users/${memberId}/receive`, { method: 'PATCH' });
-      data = await response.json();
-      el.textContent = data.receiveEmail ? '수신' : '거부';
-      el.className = `badge px-3 py-2 cursor-pointer ${data.receiveEmail ? 'bg-success' : 'bg-secondary'}`;
-    }
-
   } catch (err) {
     console.error(err);
     alert("상태 변경에 실패했습니다.");

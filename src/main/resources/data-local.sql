@@ -11,8 +11,8 @@ VALUES ('tester2', 'tester2@test.com', '$2b$12$Xq6gldZgCgsec6HLq7bB/e.xOTyFZq4q4
 
 INSERT INTO member (member_name, email, password, role, status, receive_email, created_at, updated_at)
 VALUES ('tester3', 'tester3@test.com', '$2b$12$Xq6gldZgCgsec6HLq7bB/e.xOTyFZq4q4eXqwXdBOXS/E2TqVaXy6', 'ROLE_USER', true, false,'2025-01-06 14:27:12', '2025-01-06 14:27:12');
-INSERT INTO member (member_name, email, password, role, status, receive_email, created_at, updated_at)
-VALUES ('ysy98081', 'ysy98081@naver.com', '$2b$12$Xq6gldZgCgsec6HLq7bB/e.xOTyFZq4q4eXqwXdBOXS/E2TqVaXy6', 'ROLE_USER',true, true,'2025-02-06 14:27:12', '2025-02-06 14:27:12');
+INSERT INTO member (member_name, email, password, role, status, is_verified, receive_email, created_at, updated_at)
+VALUES ('ysy98081', 'ysy98081@naver.com', '$2b$12$Xq6gldZgCgsec6HLq7bB/e.xOTyFZq4q4eXqwXdBOXS/E2TqVaXy6', 'ROLE_USER',true, true,true,'2025-02-06 14:27:12', '2025-02-06 14:27:12');
 
 INSERT INTO member (member_name, email, password, role, status, receive_email, created_at, updated_at)
 VALUES ('tester5', 'tester5@test.com', '$2b$12$Xq6gldZgCgsec6HLq7bB/e.xOTyFZq4q4eXqwXdBOXS/E2TqVaXy6', 'ROLE_USER', true, false,'2025-03-06 14:27:12', '2025-03-06 14:27:12');
