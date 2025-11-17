@@ -81,7 +81,7 @@
 
                   <!-- 🔥 markdown 전체 대신 요약만 -->
                   <p class="post-preview small text-muted"
-                     th:text="${#strings.abbreviate(post.content, 120)}">
+                     th:text="${#strings.abbreviate(#strings.substringAfter(post.content, '###'), 120)}">
                   </p>
                 </div>
 

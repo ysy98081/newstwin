@@ -74,7 +74,7 @@ public class PostService {
             post.getThumbnailUrl(),
             post.getCreatedAt(),
             post.getCount(),
-            abbreviate(post.getContent(), 120) // 요약 생성
+            post.getContent()
         )
     );
   }
