@@ -33,7 +33,9 @@
       <tr th:each="post, stat : ${posts}">
         <td th:text="${stat.count}"></td>
         <td th:text="${post.memberName}"></td>
-        <td th:text="${#strings.arrayJoin(post.categories, ', ')}"></td>
+        <td th:text="${post.categories != null && !post.categories.isEmpty()
+              ? #strings.arrayJoin(post.categories, ', ')
+              : '-'}"></td>
         <td>
           <a th:href="@{'/admin/posts-contents/' + ${post.id}}"
              th:text="${post.title}"

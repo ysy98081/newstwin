@@ -153,4 +153,47 @@ public class MailLogService {
       throw new RuntimeException("메일 재전송 실패", e);
     }
   }
+
+  public String buildHtmlFromOriginalPosts(Member member, List<Post> posts) {
+
+    StringBuilder sb = new StringBuilder();
+    String baseUrl = "http://localhost:8080";
+
+    sb.append("<div style='font-family:Arial, Helvetica, sans-serif; padding:20px;'>")
+        .append("<h2>오늘의 뉴스레터</h2>")
+        .append("<p>").append(member.getMemberName()).append(" 님, 오늘 등록된 뉴스입니다.</p>")
+        .append("<hr>");
+
+    for (Post post : posts) {
+
+      String postUrl = baseUrl + "/post/" + post.getId();
+      String content = post.getContent();
+
+      if (!content.toLowerCase().contains("<p") && content.contains("![")) {
+        Parser parser = Parser.builder().build();
+        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        content = renderer.render(parser.parse(content));
+      }
+
+      content = content.replaceAll(
+          "src=[\"'](/uploads/[^\"']+)[\"']",
+          "src=\"" + baseUrl + "$1\""
+      );
+
+      sb.append("<div style='margin-bottom:20px;'>")
+          .append("<h3>").append(post.getTitle()).append("</h3>")
+          .append("<p>")
+          .append("<a href='").append(postUrl).append("' target='_blank' ")
+          .append("style='color:#0d6efd; text-decoration:none; font-weight:500;'>원문 읽기</a>")
+          .append("</p>")
+          .append("<div style='line-height:1.6;'>")
+          .append(content)
+          .append("</div>")
+          .append("</div>")
+          .append("<hr>");
+    }
+
+    sb.append("</div>");
+    return sb.toString();
+  }
 }

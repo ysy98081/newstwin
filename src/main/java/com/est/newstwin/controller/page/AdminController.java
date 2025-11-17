@@ -11,6 +11,7 @@ import com.est.newstwin.dto.auth.LoginResponseDto;
 import com.est.newstwin.dto.member.MemberResponseDto;
 import com.est.newstwin.exception.CustomException;
 import com.est.newstwin.exception.ErrorCode;
+import com.est.newstwin.repository.CommentRepository;
 import com.est.newstwin.repository.MailLogRepository;
 import com.est.newstwin.repository.MemberRepository;
 import com.est.newstwin.service.AdminService;
@@ -55,6 +56,7 @@ public class AdminController {
   private final MailLogService mailLogService;
   private final MailLogRepository mailLogRepository;
   private final CommentService commentService;
+  private final CommentRepository commentRepository;
   private final AuthService authService;
   private final MemberRepository memberRepository;
 
@@ -272,10 +274,13 @@ public class AdminController {
     return "admin/comments";
   }
 
-  @PostMapping("/admin/comments/{id}/delete")
+  @PostMapping("/admin/comments/{id}/status")
   @ResponseBody
   public ResponseEntity<?> deleteComment(@PathVariable Long id) {
-    commentService.deleteComment(id);
+    Comment comment = commentRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("댓글 없음"));
+    comment.setDeleted(!comment.isDeleted());
+    commentRepository.save(comment);
     return ResponseEntity.ok().build();
   }
 
