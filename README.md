@@ -9,9 +9,9 @@ Spring Boot + PostgreSQL 기반으로 전체 파이프라인이 자동 운영됩
 
 ---
 
-# 👥 Team White Donuts
+# 👥 Team NewsTwin
 
-**White Donuts 팀은 AI 자동화 시스템, 웹 개발, UI 설계 등 전체 기능을 협업하여 구현한 팀입니다.**
+**NewsTwin 팀은 AI 자동화 시스템, 웹 개발, UI 설계 등 전체 기능을 협업하여 구현한 팀입니다.**
 
 ## 👨‍💻 팀원 소개
 
@@ -74,7 +74,7 @@ https://www.notion.so/oreumi/5-NT-NewsTwin-299ebaa8982b80b6b9b6e7ce37a89583
 # 🗂️ 디렉토리 구조
 
 <pre>
-templates
+NewsTwin
   │  index.html
   │
   ├─admin
