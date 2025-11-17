@@ -97,7 +97,8 @@
             <span>공유하기</span>
           </button>
 
-          <div id="shareMenu" class="card position-absolute d-none" style="z-index:1000; width:160px;">
+          <!-- 본문 하단 공유 메뉴 -->
+          <div id="shareMenu" class="card d-none">
             <ul class="list-group list-group-flush">
               <li class="list-group-item share-copy">🔗 URL 복사</li>
               <li class="list-group-item share-sns">📢 SNS 공유</li>
@@ -105,7 +106,6 @@
           </div>
 
         </div>
-
 
         <!-- 댓글 -->
         <div class="comment-section mt-4">
@@ -136,21 +136,25 @@
 <!-- Footer -->
 <div th:replace="~{layout/footer :: footer}"></div>
 
-<!-- Scripts -->
-<script th:inline="javascript">
-  const IS_LOGGED_IN = [[${isLoggedIn}]];
-  const MEMBER_RECEIVE_EMAIL = [[${memberReceiveEmail}]];
-  const LOGIN_PROFILE_URL = /*[[${loginUser != null ? loginUser.profileImage : null}]]*/ null;
-  const DEFAULT_PROFILE_URL = '/images/basic-profile.png';
-</script>
-
+<!-- JS 라이브러리 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<!-- 공통 JS -->
 <script src="/js/layout/header.js" defer></script>
+<script src="/js/subscription.js" defer></script>
 <script src="/js/comments.js" defer></script>
 <script src="/js/postdetail.js" defer></script>
 
-<!-- 마크다운 렌더링 (변경 핵심) -->
+<!-- 전역 상태 (subscription.js에서 사용) -->
+<script th:inline="javascript">
+  const MEMBER_RECEIVE_EMAIL = [[${memberReceiveEmail}]];
+  const IS_LOGGED_IN = [[${isLoggedIn}]];
+  window.LOGIN_PROFILE_URL = /*[[${loginUser != null ? loginUser.profileImage : null}]]*/ null;
+  window.DEFAULT_PROFILE_URL = '/images/basic-profile.png';
+</script>
+
+<!-- 마크다운 렌더링 -->
 <script th:inline="javascript">
   document.addEventListener("DOMContentLoaded", () => {
 

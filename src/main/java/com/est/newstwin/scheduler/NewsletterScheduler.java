@@ -29,7 +29,7 @@ public class NewsletterScheduler {
   private final MailLogService mailService;
 
   @Transactional
-  @Scheduled(cron = "5 * * * * *", zone = "Asia/Seoul")
+  @Scheduled(cron = "0 0 10 * * *", zone = "Asia/Seoul")
   public void sendNewsletters() {
     log.info("📧 [NewsletterScheduler] 구독자별 통합 뉴스 생성 및 발송 시작");
 

@@ -11,6 +11,7 @@
   const sideLike = document.getElementById("sideLike");
   const sideLikeCount = document.getElementById("sideLikeCount");
   const sideBookmark = document.getElementById("sideBookmark");
+  const sideComment = document.getElementById("sideComment");
   const sideCommentCount = document.getElementById("sideCommentCount");
 
   const ensureAuthOrRedirect = (res) => {
@@ -19,6 +20,13 @@
       return false;
     }
     return true;
+  };
+
+  /* 댓글 수를 사이드바와 동기화 (comments.js에서 사용) */
+  window.updateSideCommentCount = function (count) {
+    if (sideCommentCount) {
+      sideCommentCount.textContent = count;
+    }
   };
 
   /* 좋아요 UI */
@@ -40,7 +48,6 @@
   };
 
   document.addEventListener("DOMContentLoaded", async () => {
-
     /* 댓글 Total 불러오기 */
     const resCommentCount = await fetch(`/api/posts/${postId}/comments?page=0&size=1`);
     if (resCommentCount.ok) {
@@ -50,7 +57,7 @@
       const ct = document.getElementById("commentTotal");
       if (ct) ct.textContent = total;
 
-      sideCommentCount.textContent = total;
+      window.updateSideCommentCount(total);
     }
 
     /* 좋아요/북마크 불러오기 */
@@ -97,15 +104,75 @@
 
   sideBookmark.addEventListener("click", () => bookmarkBtn.click());
 
+  /* 사이드 댓글 버튼 → 댓글 영역으로 스크롤 */
+  if (sideComment) {
+    sideComment.addEventListener("click", () => {
+      const section = document.querySelector(".comment-section");
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  }
+
   /* 공유 메뉴 (본문 아래) */
   const shareBtn = document.getElementById("shareBtn");
   const shareMenu = document.getElementById("shareMenu");
+  const reactionBar = document.querySelector(".reaction-bar");
 
-  if (shareBtn && shareMenu) {
+  // 공통 공유 동작 (본문 + 오른쪽 액션바에서 같이 사용)
+  const handleShareCopy = async (e) => {
+    if (e && e.preventDefault) e.preventDefault();
 
-    // 열기/닫기
+    const url = window.location.href;
+    try {
+      await navigator.clipboard.writeText(url);
+      alert("주소가 복사되었습니다.");
+    } catch (err) {
+      alert("복사에 실패했습니다.");
+    }
+    if (shareMenu) {
+      shareMenu.classList.add("d-none");
+    }
+  };
+
+  const handleShareSNS = async (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+
+    const url = window.location.href;
+    const title = document.title;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, url });
+      } catch (err) {
+        // 사용자가 취소한 경우 등은 무시
+      }
+    } else {
+      window.open(
+          `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+              url
+          )}&quote=${encodeURIComponent(title)}`,
+          "_blank",
+          "width=600,height=500"
+      );
+    }
+    if (shareMenu) {
+      shareMenu.classList.add("d-none");
+    }
+  };
+
+  // 본문 하단 공유 버튼 위치 계산 + 열기/닫기
+  if (shareBtn && shareMenu && reactionBar) {
     shareBtn.addEventListener("click", (e) => {
       e.stopPropagation();
+
+      const rect = shareBtn.getBoundingClientRect();
+      const barRect = reactionBar.getBoundingClientRect();
+
+      // reaction-bar 기준 좌표로 변환
+      shareMenu.style.top = `${rect.bottom - barRect.top + 8}px`;
+      shareMenu.style.left = `${rect.left - barRect.left}px`;
+
       shareMenu.classList.toggle("d-none");
     });
 
@@ -119,24 +186,13 @@
         shareMenu.classList.add("d-none");
       }
     });
-
-    // URL 복사
-    shareMenu.querySelector(".share-copy")?.addEventListener("click", async () => {
-      await navigator.clipboard.writeText(window.location.href);
-      alert("주소가 복사되었습니다.");
-      shareMenu.classList.add("d-none");
-    });
-
-    // SNS 공유
-    shareMenu.querySelector(".share-sns")?.addEventListener("click", () => {
-      const url = encodeURIComponent(window.location.href);
-      window.open(
-          `https://www.facebook.com/sharer/sharer.php?u=${url}`,
-          "_blank",
-          "width=600,height=500"
-      );
-      shareMenu.classList.add("d-none");
-    });
-
   }
+
+  // 공유 메뉴 항목들(본문 + 사이드 액션바 모두)에 공통 핸들러 연결
+  document.querySelectorAll(".share-copy").forEach((el) => {
+    el.addEventListener("click", handleShareCopy);
+  });
+  document.querySelectorAll(".share-sns").forEach((el) => {
+    el.addEventListener("click", handleShareSNS);
+  });
 })();

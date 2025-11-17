@@ -96,7 +96,7 @@ main {
     gap: 1.2rem;
     margin-top: 1.8rem;
     flex-wrap: wrap;
-    position: relative; /* 🔥 공유 메뉴 기준점 */
+    position: relative; /* 공유 메뉴 기준 */
 }
 .reaction-bar button {
     background: #f8f9fa;
@@ -119,9 +119,7 @@ main {
    공유 메뉴 드롭다운
 ====================== */
 #shareMenu {
-    position: absolute;      /* 🔥 반드시 필요 */
-    top: 42px;               /* 공유하기 버튼 바로 아래 */
-    left: 0;
+    position: absolute; /* reaction-bar 기준으로 JS에서 위치 계산 */
     border-radius: 8px;
     overflow: hidden;
     border: 1px solid #dee2e6;
@@ -196,7 +194,12 @@ main {
     flex-direction: column;
     gap: 1rem;
     z-index: 100;
-    pointer-events: none;
+    pointer-events: none; /* 기본은 막되 */
+}
+
+.side-action .action-btn,
+.side-action .dropdown-menu {
+    pointer-events: auto;  /* 버튼 + 드롭다운은 클릭 가능 */
 }
 
 @media (max-width: 1200px) {
@@ -220,7 +223,6 @@ main {
     justify-content: center;
     box-shadow: 0 2px 5px rgba(0,0,0,0.08);
     transition: all 0.2s ease;
-    pointer-events: auto;
 }
 .action-btn:hover {
     background: #f1f3f5;
