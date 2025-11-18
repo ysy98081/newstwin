@@ -4,9 +4,9 @@ spring:
       on-profile: prod
 
   datasource:
-    url: jdbc:postgresql://prod-db-host:5432/newsdb
-    username: prod_user
-    password: prod_password
+    url: jdbc:postgresql://${RDS_ENDPOINT}:5432/${RDS_DB_NAME}
+    username: ${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:

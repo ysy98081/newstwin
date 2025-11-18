@@ -53,7 +53,9 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="post, i : ${posts.content}">
+    <tr th:each="post, i : ${posts.content}"
+        th:onclick="'window.location.href=\'/board/' + ${post.id} + '\';'"
+        style="cursor: pointer;">
       <td class="text-center"
           th:text="${#numbers.formatInteger(posts.totalElements - (posts.number * posts.size) - i.index, 0)}"></td>
       <td class="text-start">

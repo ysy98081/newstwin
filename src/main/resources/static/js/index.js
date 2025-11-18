@@ -63,7 +63,7 @@ async function fetchCommunityTopics() {
 
         container.innerHTML = topics.map(topic => `
             <li class="list-group-item d-flex justify-content-between align-items-center topic-item"
-                onclick="window.location.href='/post/${topic.id}'" style="cursor:pointer;">
+                onclick="window.location.href='/board/${topic.id}'" style="cursor:pointer;">
                 <span>${topic.title}</span>
             </li>
         `).join("");
