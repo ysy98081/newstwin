@@ -117,7 +117,7 @@ public class MemberController {
             .body("""
                           <div style='font-family:sans-serif;padding:20px;'>
                           ✅ 이미 뉴스레터 수신이 해제된 상태입니다.<br><br>
-                          <a href='http://localhost:8080'>홈으로 돌아가기</a>
+                          <a href='https://newstwin.kro.kr/'>홈으로 돌아가기</a>
                           </div>
                           """);
       }
@@ -131,7 +131,7 @@ public class MemberController {
                       <div style='font-family:sans-serif;padding:20px;'>
                       ✅ 뉴스레터 수신이 해제되었습니다.<br>
                       앞으로 더 이상 메일이 발송되지 않습니다.<br><br>
-                      <a href='http://localhost:8080'>홈으로 돌아가기</a>
+                      <a href='https://newstwin.kro.kr/'>홈으로 돌아가기</a>
                       </div>
                       """);
     }

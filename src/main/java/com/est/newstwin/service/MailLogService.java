@@ -82,11 +82,11 @@ public class MailLogService {
 
   public String buildHtmlNewsletter(Member member, String summary, List<Post> newsPosts) {
     String unsubscribeLink = String.format(
-        "http://localhost:8080/api/members/unsubscribe?memberId=%d", member.getId()
+        "https://newstwin.kro.kr/api/members/unsubscribe?memberId=%d", member.getId()
     );
 
     for (Post p : newsPosts) {
-      String localLink = "http://localhost:8080/post/" + p.getId();
+      String localLink = "https://newstwin.kro.kr/post/" + p.getId();
       String linkHtml = String.format(
           "<a href='%s' target='_blank' style='color:#0d6efd; text-decoration:none; font-weight:500;'>%s</a>",
           localLink, p.getTitle()
@@ -157,7 +157,7 @@ public class MailLogService {
   public String buildHtmlFromOriginalPosts(Member member, List<Post> posts) {
 
     StringBuilder sb = new StringBuilder();
-    String baseUrl = "http://localhost:8080";
+    String baseUrl = "https://newstwin.kro.kr";
 
     sb.append("<div style='font-family:Arial, Helvetica, sans-serif; padding:20px;'>")
         .append("<h2>오늘의 뉴스레터</h2>")

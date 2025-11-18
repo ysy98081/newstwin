@@ -17,7 +17,7 @@ public class EmailService {
     private String senderEmail;
 
     // 배포/로컬 베이스 URL (미설정 시 로컬 기본값)
-    @Value("${app.base-url:http://localhost:8080}")
+    @Value("${app.base-url:https://newstwin.kro.kr}")
     private String appBaseUrl;
 
     /**
