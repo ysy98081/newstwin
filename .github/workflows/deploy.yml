@@ -37,6 +37,7 @@ jobs:
           port: 22
           source: ${{ steps.jarname.outputs.JAR_FILE }}
           target: "/home/ec2-user/newstwin/"
+          strip_components: 3
 
       - name: Restart application on EC2
         uses: appleboy/ssh-action@v1.0.3
@@ -47,9 +48,6 @@ jobs:
           port: 22
           script: |
             cd /home/ec2-user/newstwin
-
-            # 예전에 잘못 생성된 디렉토리 제거
-            rm -rf newstwin.jar
 
             # 최신 JAR 이름을 newstwin.jar로 통일
             mv *.jar newstwin.jar
