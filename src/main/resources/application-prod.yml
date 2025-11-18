@@ -17,6 +17,22 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
+            redirect-uri: "https://newstwin.kro.kr/login/oauth2/code/google"
+            client-name: Google
+
+app:
+  base-url: https://newstwin.kro.kr
+
 # AWS 설정
 aws:
   access-key-id: ${AWS_ACCESS_KEY_ID}
