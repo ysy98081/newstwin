@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = document.getElementById("password").value.trim();
 
     try {
-      const response = await fetch("/admin/login", {
+      const response = await csrfFetch("/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
