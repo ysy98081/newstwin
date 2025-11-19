@@ -36,7 +36,10 @@ public class SecurityConfig {
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .ignoringRequestMatchers(
                                 "/api/**",         // REST API는 JWT로만 보호 (CSRF 검사 제외)
-                                "/h2-console/**"   // H2 콘솔
+                                "/h2-console/**",   // H2 콘솔
+                                "/board/write",
+                                "/board/edit/**",
+                                "/board/delete/**"
                         )
                 )
 

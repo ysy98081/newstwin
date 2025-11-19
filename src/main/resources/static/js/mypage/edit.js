@@ -6,19 +6,37 @@
 const profileInput = document.getElementById("profileImage");
 const profilePreview = document.getElementById("profilePreview");
 
-if (profileInput) {
-    profileInput.addEventListener("change", (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            if (file.size > 10 * 1024 * 1024) {
-                alert("10MB 이하의 이미지만 업로드 가능합니다.");
-                profileInput.value = "";
-                return;
-            }
-            profilePreview.src = URL.createObjectURL(file);
-        }
-    });
-}
+let tempImageUrl = null;
+
+profileInput.addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  profilePreview.src = URL.createObjectURL(file);
+
+  // TEMP 업로드
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await csrfFetch("/api/mypage/profile/temp", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+  tempImageUrl = data.data;
+
+  // form에 hidden 입력 추가
+  let hidden = document.getElementById("tempImageUrl");
+  if (!hidden) {
+    hidden = document.createElement("input");
+    hidden.type = "hidden";
+    hidden.name = "tempImageUrl";
+    hidden.id = "tempImageUrl";
+    form.appendChild(hidden);
+  }
+  hidden.value = tempImageUrl;
+});
 
 // 비밀번호 일치 확인
 const password = document.getElementById("password");

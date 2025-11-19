@@ -6,7 +6,9 @@ import com.est.newstwin.dto.member.MemberUpdateRequestDto;
 import com.est.newstwin.dto.mypage.SubscriptionRequestDto;
 import com.est.newstwin.dto.mypage.SubscriptionResponseDto;
 import com.est.newstwin.service.MypageService;
+import com.est.newstwin.service.ProfileImageService;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -28,6 +30,7 @@ import java.time.Duration;
 public class MypageController {
 
     private final MypageService mypageService;
+    private final ProfileImageService profileImageService;
 
     /** 내 정보 조회 */
     @GetMapping("/me")
@@ -39,22 +42,45 @@ public class MypageController {
         return ApiResponse.success("내 정보 조회 성공", response);
     }
 
-    /** 내 정보 수정 */
-    @PostMapping(value = "/me", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse<MemberResponseDto> updateMyInfo(
-            @RequestPart(value = "memberName", required = false) String memberName,
-            @RequestPart(value = "password", required = false) String password,
-            @RequestPart(value = "receiveEmail", required = false) String receiveEmail,
-            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage
-    ) {
-        Boolean receive = (receiveEmail != null) ? Boolean.parseBoolean(receiveEmail) : null;
-        MemberUpdateRequestDto dto = new MemberUpdateRequestDto(memberName, password, receive, profileImage);
+    /** 프로필 임시등록 */
+    @PostMapping(value="/profile/temp", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<String> uploadTempProfile(
+       @RequestPart("file") MultipartFile file
+    ) throws IOException {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
+        MemberResponseDto member = mypageService.getMyInfo(email);
 
-        MemberResponseDto response = mypageService.updateMyInfo(email, dto);
-        return ApiResponse.success("내 정보 수정 성공", response);
+        Long memberId = member.getId();
+
+        // temp 업로드
+        String tempUrl = profileImageService.uploadTemp(file, memberId);
+
+        return ApiResponse.success("임시 업로드 성공", tempUrl);
+  }
+
+    /** 내 정보 수정 */
+    @PostMapping(value = "/me", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<MemberResponseDto> updateMyInfo(
+        @RequestPart(value = "memberName", required = false) String memberName,
+        @RequestPart(value = "password", required = false) String password,
+        @RequestPart(value = "receiveEmail", required = false) String receiveEmail,
+        @RequestPart(value = "tempImageUrl", required = false) String tempImageUrl,
+        @RequestPart(value = "profileImage", required = false) MultipartFile profileImage
+    ) {
+      Boolean receive = receiveEmail != null ? Boolean.parseBoolean(receiveEmail) : null;
+
+      MemberUpdateRequestDto dto = new MemberUpdateRequestDto(
+          memberName,
+          password,
+          receive,
+          profileImage,
+          tempImageUrl
+      );
+
+      String email = SecurityContextHolder.getContext().getAuthentication().getName();
+      return ApiResponse.success("내 정보 수정 성공", mypageService.updateMyInfo(email, dto));
     }
 
     /** 구독 목록 조회 */

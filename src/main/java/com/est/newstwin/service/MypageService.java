@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MypageService {
 
+    private final ProfileImageService profileImageService;
     private final MemberRepository memberRepository;
     private final UserSubscriptionRepository userSubscriptionRepository;
     private final CategoryRepository categoryRepository;
@@ -82,25 +83,19 @@ public class MypageService {
             changed = true;
         }
 
-        // 4) 프로필 이미지 변경
-        if (dto.getProfileImage() != null && !dto.getProfileImage().isEmpty()) {
-            try {
-                String rootDir = System.getProperty("user.dir"); // 현재 프로젝트 루트 절대경로
-                Path uploadDir = Paths.get(rootDir, "uploads", "profile");
-                Files.createDirectories(uploadDir); // 경로 없으면 자동 생성
 
-                String fileName = UUID.randomUUID() + "_" + dto.getProfileImage().getOriginalFilename();
-                Path savePath = uploadDir.resolve(fileName);
+        // 4) 프로필 이미지 최종 확정
+      if (dto.getTempImageUrl() != null && !dto.getTempImageUrl().isBlank()) {
 
-                dto.getProfileImage().transferTo(savePath.toFile());
+        String finalUrl = profileImageService.finalizeProfile(
+            dto.getTempImageUrl(),
+            member.getProfileImage()
+        );
 
-                member.updateInfo(null, null, null, "/uploads/profile/" + fileName);
-                changed = true;
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
-            }
-        }
+        member.updateInfo(null, null, null, finalUrl);
+        changed = true;
+      }
+
 
         if (changed) {
             Member saved = memberRepository.save(member);
