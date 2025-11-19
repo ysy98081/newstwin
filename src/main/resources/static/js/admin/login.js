@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = document.getElementById("password").value.trim();
 
     try {
-      const response = await csrfFetch("/admin/login", {
+      const response = await csrfFetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await response.json();
 
       if (response.ok && result.success) {
-        alert(result.message);
+        alert("관리자 로그인 성공");
         window.location.href = "/admin";
       } else {
         alert(result.message || "관리자 로그인 실패");
